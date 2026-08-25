@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+}
+    
+body{
+    /* background: url('/src/assets/bg3.gif'); */
+    background: url('/src/assets/bg.png');
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.inactive{
+    opacity: 0;
+    display: none !important;
+    pointer-events: none;
+}

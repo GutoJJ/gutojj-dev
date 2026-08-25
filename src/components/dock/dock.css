@@ -1,0 +1,65 @@
+.dock{
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.384);
+    backdrop-filter: blur(25px);
+    margin-bottom: 5px;
+    padding: 10px;
+    border-radius: 25px;
+    animation: dockAppears 0.3s ease forwards;
+    .dock-apps{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        animation: fadeIn 0.5s ease forwards;
+        img {
+            cursor: default;
+            transition: all 0.2s ease;
+            padding: 3px;
+            border-radius: 20px;
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.165);
+            }
+        }
+    }
+    .dock-line{
+        height: 40px;
+        width: 3px;
+        background-color: rgba(255, 255, 255, 0.247);
+    }
+}
+
+@keyframes dockAppears {
+    0% {
+        transform: translateX(-50%) translateY(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(-50%);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

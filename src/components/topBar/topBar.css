@@ -1,0 +1,151 @@
+.topBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 33px;
+
+    box-sizing: border-box;
+    backdrop-filter: blur(14px);
+    background-color: rgba(0, 0, 0, 0.281);
+    color: #f5f5f5;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    animation: topAppears 0.3s ease forwards;
+}
+
+.topBar-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    animation: fadeIn 0.5s ease forwards;
+    padding: 4px 15px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.topBar-date,
+.topBar-time {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.topBar-left {
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    animation: fadeIn 0.5s ease forwards;
+
+    .screens {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding: 4px 15px;
+        height: 20px;
+        border-radius: 20px;
+        transition: all 0.2s ease;
+    }
+
+    .dash {
+        width: 30px;
+        height: 9px;
+        border-radius: 4px;
+        background-color: #f5f5f5;
+    }
+
+    .dots {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: #f5f5f58b;
+    }
+}
+
+.topBar-right {
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.topBar-usage {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    padding: 4px 15px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+
+    .topBar-stat {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: 60px;
+        font-size: 15px;
+        font-weight: 700;
+    }
+}
+
+.topBar-sys-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 4px 15px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.topBar-lang {
+    font-size: 15px;
+    padding: 4px 15px;
+    border-radius: 20px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.topBar-usage:hover, .topBar-sys-icons:hover, .topBar-center:hover, .screens:hover, .topBar-lang:hover {
+    cursor: default;
+    background-color: rgba(255, 255, 255, 0.173);
+}
+
+@keyframes topAppears {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
