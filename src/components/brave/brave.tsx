@@ -190,7 +190,7 @@ function BraveResumeBrowser({ onClose }: BraveResumeBrowserProps) {
                     <section className="hero">
                         <div className="hero-bg" aria-hidden="true" />
                         <div className="hero-content">
-                            <span className="eyebrow">status do sistema</span>
+                            <span className="eyebrow">curriculum vitae</span>
                             <h1 className="hero-name">{PROFILE.name}</h1>
                             <p className="hero-role">{PROFILE.role}</p>
 

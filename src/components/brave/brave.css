@@ -546,7 +546,21 @@
 
 @media(max-width: 640px) {
     .brave-window {
-        width: 90vw;
+        margin: 0;
+        width: 100vw;
+        height: 90vh;
+        margin-top: 5vh;
+    }
+
+    .brave-viewport {
+        height: 100%;
+    }
+
+    .footer {
+        padding-bottom: 25vh;
+    }
+    .section {
+        padding: 32px 24px;
     }
 }
 
