@@ -1,9 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import './brave.css'
 
-// ---------------------------------------------------------------------------
-// Conteúdo real do currículo — edite aqui se algo mudar.
-// ---------------------------------------------------------------------------
 const PROFILE = {
     name: 'Augusto Jung',
     role: 'Desenvolvedor Back-end',
@@ -101,33 +98,6 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
     );
 }
 
-// ---------------------------------------------------------------------------
-// Diagrama de fluxo animado — elemento de assinatura do design.
-// Representa exatamente o que o currículo descreve: cliente -> API -> integrações -> cloud.
-// ---------------------------------------------------------------------------
-function FlowDiagram() {
-    const nodes = [
-        { id: 'client', label: 'Cliente / CRM', x: 40, y: 90 },
-        { id: 'api', label: 'API Node.js / TS', x: 260, y: 40 },
-        { id: 'ai', label: 'Gemini · Translate', x: 480, y: 90 },
-        { id: 'aws', label: 'AWS · ECS / RDS / S3', x: 480, y: 150 },
-    ];
-
-    return (
-        <svg viewBox="0 0 560 200" className="flow-diagram" role="img" aria-label="Fluxo de integração entre sistemas">
-            <path d="M 70 90 C 150 90, 170 50, 250 45" className="flow-path" />
-            <path d="M 300 48 C 380 55, 400 80, 460 90" className="flow-path" />
-            <path d="M 300 52 C 380 90, 400 130, 460 150" className="flow-path" />
-
-            {nodes.map((n) => (
-                <g key={n.id} transform={`translate(${n.x}, ${n.y})`}>
-                    <circle r="5" className="flow-node-dot" />
-                    <text x="12" y="4" className="flow-node-label">{n.label}</text>
-                </g>
-            ))}
-        </svg>
-    );
-}
 
 interface BraveResumeBrowserProps {
     onClose?: () => void;
@@ -239,17 +209,6 @@ function BraveResumeBrowser({ onClose }: BraveResumeBrowserProps) {
                                 <a className="hero-link" href={`https://${CONTACT.linkedin}`} target="_blank" rel="noreferrer">LinkedIn</a>
                             </div>
                         </div>
-                    </section>
-
-                    <section className="section">
-                        <Reveal>
-                            <span className="eyebrow">arquitetura</span>
-                            <h2 className="section-title">Como os sistemas se conectam</h2>
-                            <p className="section-lead">
-                                Resumo visual do tipo de integração que venho construindo: uma API central falando com serviços de IA e infraestrutura em nuvem.
-                            </p>
-                            <FlowDiagram />
-                        </Reveal>
                     </section>
 
                     <section className="section">

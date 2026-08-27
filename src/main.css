@@ -1,22 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     color: #fff;
     font-family: 'Inter', sans-serif;
 }
-    
-body{
-    /* background: url('/src/assets/bg3.gif'); */
-    background: url('/src/assets/bg.png');
+
+body {
+
+    min-height: 100vh;
+    margin: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255, 94, 98, 0.6), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(94, 158, 255, 0.5), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(157, 78, 221, 0.6), transparent 50%),
+        linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background-blend-mode: screen;
+
+    /* background: url('./assets/bg.png');
     background-size: cover;
-    background-position: center;
+    background-position: center; */
+
     width: 100vw;
     height: 100vh;
 }
 
-.inactive{
+.inactive {
     opacity: 0;
     display: none !important;
     pointer-events: none;

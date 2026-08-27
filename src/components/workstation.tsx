@@ -48,7 +48,12 @@ const Workstation = () => {
   return (
     <div className="teste" style={{ position: 'relative', minHeight: '100vh' }}>
       <TopBar />
-      <Dock onOpenTerminal={openTerminal} onOpenBrave={openBrave} />
+      <Dock
+        onOpenTerminal={openTerminal}
+        onOpenBrave={openBrave}
+        isTerminalOpen={showTerminal}
+        isBraveOpen={showBrave}
+      />
 
       {showTerminal && (
         <div
@@ -64,7 +69,7 @@ const Workstation = () => {
             pointerEvents: 'auto',
           }}
         >
-          <Terminal onClose={() => closeWindow('terminal')} />
+          <Terminal onOpenBrave={openBrave} onClose={() => closeWindow('terminal')} />
         </div>
       )}
 

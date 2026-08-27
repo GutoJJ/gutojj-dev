@@ -1,5 +1,5 @@
-.gterm-window {
-    width: 900px;
+.nfterm-window {
+    width: 800px;
     max-width: calc(100vw - 32px);
     border-radius: 10px;
     overflow: hidden;
@@ -8,7 +8,7 @@
     will-change: transform, opacity;
 }
 
-.gterm-titlebar {
+.nfterm-titlebar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,44 +19,49 @@
     user-select: none;
 }
 
-.gterm-titlebar:active {
+.nfterm-titlebar:active {
     cursor: grabbing;
 }
 
-.gterm-titlebar-left,
-.gterm-titlebar-right {
+.nfterm-titlebar-left,
+.nfterm-titlebar-right {
     display: flex;
     align-items: center;
     gap: 4px;
     width: 96px;
 }
 
-.gterm-titlebar-right {
+.nfterm-titlebar-right {
     justify-content: flex-end;
 }
 
-.gterm-titlebar-center {
+.nfterm-titlebar-center {
     display: flex;
     flex-direction: column;
     align-items: center;
     line-height: 1.1;
     pointer-events: none;
+    max-width: 60%;
 }
 
-.gterm-title {
+.nfterm-title {
     color: #f2f2f2;
     font-size: 13.5px;
     font-weight: 600;
     font-family: -apple-system, "Cantarell", "Inter", sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
-.gterm-subtitle {
+.nfterm-subtitle {
     color: rgba(255, 255, 255, 0.38);
     font-size: 10px;
     font-family: -apple-system, "Cantarell", "Inter", sans-serif;
 }
 
-.gterm-btn {
+.nfterm-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,17 +71,17 @@
     cursor: pointer;
 }
 
-.gterm-btn-icon {
+.nfterm-btn-icon {
     width: 30px;
     height: 30px;
     border-radius: 7px;
 }
 
-.gterm-btn-icon:hover {
+.nfterm-btn-icon:hover {
     background: rgba(255, 255, 255, 0.08);
 }
 
-.gterm-btn-close {
+.nfterm-btn-close {
     width: 24px;
     height: 24px;
     border-radius: 999px;
@@ -84,60 +89,109 @@
     color: #fff;
 }
 
-.gterm-btn-close:hover {
+.nfterm-btn-close:hover {
     background: rgba(255, 255, 255, 0.22);
 }
 
-.gterm-body {
+.nfterm-body {
     background: #1b1b1b;
-    min-height: 420px;
+    height: 480px;
+    overflow-y: auto;
     padding: 14px 16px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #ebdbb2;
+    cursor: text;
 }
 
-.gterm-line {
+.nfterm-line {
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 2px;
+}
+
+.nfterm-line--error {
+    color: #fb6a6a;
+}
+
+.nfterm-inputrow {
     display: flex;
     align-items: center;
     gap: 0;
-    font-size: 14px;
 }
 
-.gterm-prompt {
+.nfterm-prompt {
     color: #8ec07c;
     font-weight: 600;
 }
 
-.gterm-colon {
+.nfterm-colon {
     color: #8ec07c;
     font-weight: 600;
 }
 
-.gterm-path {
+.nfterm-path {
     color: #83a598;
     font-weight: 600;
 }
 
-.gterm-dollar {
+.nfterm-dollar {
     color: #ebdbb2;
-    margin-left: 6px;
-    margin-right: 8px;
+    margin: 0 8px 0 2px;
 }
 
-.gterm-cursor {
-    width: 8px;
-    height: 17px;
-    background: #ebdbb2;
-    animation: gterm-blink 1s steps(1) infinite;
+.nfterm-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ebdbb2;
+    font: inherit;
+    caret-color: #ebdbb2;
 }
 
-@keyframes gterm-blink {
+.neofetch-block {
+    display: flex;
+    gap: 24px;
+    padding: 6px 0 12px;
+}
 
-    0%,
-    49% {
-        opacity: 1;
-    }
+.neofetch-ascii {
+    color: #83a598;
+    font-size: 11px;
+    line-height: 1.15;
+    margin: 0;
+    flex-shrink: 0;
+}
 
-    50%,
-    100% {
-        opacity: 0;
-    }
+.neofetch-info p {
+    margin: 1px 0;
+    color: #ebdbb2;
+}
+
+.neofetch-user {
+    color: #fabd2f;
+    font-weight: 700;
+}
+
+.neofetch-rule {
+    color: #665c54;
+}
+
+.neofetch-label {
+    color: #fabd2f;
+    font-weight: 600;
+}
+
+.neofetch-swatches {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px !important;
+}
+
+.neofetch-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    display: inline-block;
 }
