@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import './brave.css'
+import cvPdf from '../../assets/cv_augusto_jung.pdf';
 
 const PROFILE = {
     name: 'Augusto Jung',
@@ -315,6 +316,8 @@ function BraveResumeBrowser({ onClose }: BraveResumeBrowserProps) {
                                 <span>{CONTACT.phone}</span>
                                 <span className="footer-sep">·</span>
                                 <a href={`https://${CONTACT.github}`} target="_blank" rel="noreferrer">{CONTACT.github}</a>
+                                <span className="footer-sep">·</span>
+                                <a download={"CV_Augusto Jung"} href={cvPdf} className="footer-download" aria-label="Baixar currículo em PDF">Baixar PDF</a>
                             </div>
                         </Reveal>
                     </footer>

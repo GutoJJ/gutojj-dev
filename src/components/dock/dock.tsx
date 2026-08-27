@@ -20,7 +20,7 @@ interface DockProps {
 
 function Dock({ onOpenTerminal, onOpenBrave, isTerminalOpen, isBraveOpen }: DockProps) {
 
-  const appSize = 52; // Tamanho padrão dos ícones
+  const appSize = 52;
 
   return (
     <div className="dock">
