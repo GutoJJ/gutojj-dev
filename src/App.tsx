@@ -42,7 +42,7 @@ function App() {
   }, []);
 
   const startTyping = () => {
-    if (isUnlocked || isTransitioning) return;
+    if (isUnlocked || isTransitioning || isTyping) return;
     setTypedBalls(0);
     setIsTyping(true);
   };
