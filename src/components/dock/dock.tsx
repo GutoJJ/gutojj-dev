@@ -14,11 +14,13 @@ import appGrid from '../../assets/dock/view-app-grid-symbolic.svg';
 interface DockProps {
   onOpenTerminal?: () => void;
   onOpenBrave?: () => void;
+  onOpenDiscord?: () => void;
   isTerminalOpen?: boolean;
   isBraveOpen?: boolean;
+  isDiscordOpen?: boolean;
 }
 
-function Dock({ onOpenTerminal, onOpenBrave, isTerminalOpen, isBraveOpen }: DockProps) {
+function Dock({ onOpenTerminal, onOpenBrave, onOpenDiscord, isTerminalOpen, isBraveOpen, isDiscordOpen }: DockProps) {
 
   const appSize = 52;
 
@@ -37,7 +39,17 @@ function Dock({ onOpenTerminal, onOpenBrave, isTerminalOpen, isBraveOpen }: Dock
           {isBraveOpen && <span className="dock-indicator" />}
         </div>
 
-        <img src={discordIcon} alt="Discord" width={appSize} height={appSize} />
+        <div className="dock-app">
+          <button
+            type="button"
+            onClick={onOpenDiscord}
+            className="dock-button"
+            aria-label="Abrir Discord"
+          >
+            <img src={discordIcon} alt="Discord" width={appSize} height={appSize} />
+          </button>
+          {isDiscordOpen && <span className="dock-indicator" />}
+        </div>
         <img src={spotifyIcon} alt="Spotify" width={appSize} height={appSize} />
         <img src={steamIcon} alt="Steam" width={appSize} height={appSize} />
         <img src={vscodeIcon} alt="VS Code" width={appSize} height={appSize} />

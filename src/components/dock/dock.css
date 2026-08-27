@@ -70,6 +70,7 @@
   transform: translateX(-50%);
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
   transition: all 0.2s ease;
+   animation: popInBounce 0.4s forwards;
 }
 
 .dock-line {
@@ -126,5 +127,19 @@
 
   100% {
     opacity: 1;
+  }
+}
+
+@keyframes popInBounce {
+  0% {
+    opacity: 0;
+    scale: .3;
+  }
+  70% {
+    scale: 1.2; 
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
   }
 }

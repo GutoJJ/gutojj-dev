@@ -11,12 +11,23 @@ body {
 
     min-height: 100vh;
     margin: 0;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(255, 94, 98, 0.6), transparent 40%),
-        radial-gradient(circle at 80% 30%, rgba(94, 158, 255, 0.5), transparent 45%),
-        radial-gradient(circle at 50% 80%, rgba(157, 78, 221, 0.6), transparent 50%),
-        linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    background-blend-mode: screen;
+     background:
+    /* brilho quente, canto superior direito — como luz baixa de sol */
+    radial-gradient(60% 55% at 82% 12%, rgba(233, 225, 205, 0.5) 0%, rgba(233, 225, 205, 0) 60%),
+
+    /* mancha bronze, meio-direita — profundidade de cor */
+    radial-gradient(75% 65% at 78% 55%, rgba(146, 119, 86, 0.55) 0%, rgba(146, 119, 86, 0) 65%),
+
+    /* névoa verde-azulada, canto inferior esquerdo */
+    radial-gradient(90% 80% at 12% 85%, rgba(70, 103, 91, 0.6) 0%, rgba(70, 103, 91, 0) 60%),
+
+    /* glow central suave, ancora a composição */
+    radial-gradient(120% 100% at 50% 60%, #2a3a45 0%, #1a1c30 65%),
+
+    /* base, garante transição completa nas bordas */
+    linear-gradient(160deg, #1a1c30 0%, #1a1c30 20%, #46675b 55%, #1a1c30 100%);
+
+  background-blend-mode: screen, screen, screen, normal, normal;
 
     /* background: url('./assets/bg.gif');
     background-size: cover;

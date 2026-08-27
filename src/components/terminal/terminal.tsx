@@ -64,6 +64,8 @@ const HELP_TEXT = [
     '  uname -a      informações do "sistema"',
     '  history       histórico de comandos',
     '  cv            abre/baixa o currículo',
+    '  brave         abre o navegador de currículo',
+    '  discord       abre o Discord',
     '  github        abre o GitHub',
     '  linkedin      abre o LinkedIn',
     '  goold         abre o site de recomendação de filmes',
@@ -114,6 +116,7 @@ function runCommand(
         clear: () => void;
         history: string[];
         onOpenBrave?: () => void;
+        onOpenDiscord?: () => void;
         onClose?: () => void;
     },
 ) {
@@ -198,8 +201,13 @@ function runCommand(
             helpers.print('linkedin: linkedin.com/in/gutojj');
             return;
         case 'cv':
+        case 'brave':
             helpers.print('Abrindo currículo no Brave...');
             helpers.onOpenBrave?.();
+            return;
+        case 'discord':
+            helpers.print('Abrindo Discord...');
+            helpers.onOpenDiscord?.();
             return;
         case 'github':
             helpers.print('Abrindo github.com/gutojj ...');
@@ -238,10 +246,11 @@ interface NeofetchTerminalProps {
     host?: string;
     cwd?: string;
     onOpenBrave?: () => void;
+    onOpenDiscord?: () => void;
     onClose?: () => void;
 }
 
-function NeofetchTerminal({ host = HOST, cwd = '~', onOpenBrave, onClose }: NeofetchTerminalProps) {
+function NeofetchTerminal({ host = HOST, cwd = '~', onOpenBrave, onOpenDiscord, onClose }: NeofetchTerminalProps) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [mounted, setMounted] = useState(false);
     const [dragging, setDragging] = useState(false);
@@ -310,9 +319,9 @@ function NeofetchTerminal({ host = HOST, cwd = '~', onOpenBrave, onClose }: Neof
         if (cmdLine.trim()) historyRef.current = [...historyRef.current, cmdLine];
         setHistoryIndex(null);
 
-        runCommand(cmdLine, cwd, { print, clear, history: historyRef.current, onOpenBrave, onClose });
+        runCommand(cmdLine, cwd, { print, clear, history: historyRef.current, onOpenBrave, onOpenDiscord, onClose });
         setInput('');
-    }, [input, host, cwd, print, clear, onOpenBrave, onClose]);
+    }, [input, host, cwd, print, clear, onOpenBrave, onOpenDiscord, onClose]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

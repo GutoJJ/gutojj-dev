@@ -1,0 +1,240 @@
+.psc-card {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    background: #1c1f24;
+    color: #f2f3f5;
+    font-family: -apple-system, "Inter", sans-serif;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.35);
+}
+
+.psc-banner {
+    position: relative;
+    height: 96px;
+    background: url(../../assets/banner.gif);
+    background-size: cover;
+    background-position: 0%;
+}
+
+.psc-avatar-wrap {
+    position: absolute;
+    left: 16px;
+    bottom: -32px;
+    width: 70px;
+    height: 70px;
+}
+
+.psc-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #2a2e35;
+    border: 4px solid #1c1f24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.psc-avatar-icon {
+    color: #6b7480;
+}
+
+.psc-status-dot {
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #23a55a;
+    border: 3px solid #1c1f24;
+    box-sizing: border-box;
+}
+
+.psc-status-dot--inline {
+    position: static;
+    border: none;
+    width: 9px;
+    height: 9px;
+    margin-right: 2px;
+}
+
+.psc-bubble {
+    position: absolute;
+    right: 44px;
+    bottom: -20px;
+    max-width: 190px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(28, 31, 36, 0.92);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 9px 12px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.psc-bubble-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b8c0c9;
+}
+
+.psc-bubble-text {
+    font-size: 11.5px;
+    line-height: 1.35;
+    font-style: italic;
+    color: #dbdee1;
+    opacity: 0;
+    transform: translateY(3px);
+    transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.psc-bubble-text--visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.psc-body {
+    padding: 44px 16px 16px;
+}
+
+.psc-name {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.psc-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.psc-tagline {
+    font-size: 12.5px;
+    color: #949ba4;
+    margin-right: 4px;
+}
+
+.psc-badge {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: #2a2e35;
+    color: #b8c0c9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.psc-panel {
+    background: #232730;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 14px;
+}
+
+.psc-panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #949ba4;
+    margin: 0 0 8px;
+}
+
+.psc-collection-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.psc-collection-item {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background-color: #35393f;
+    background-size: cover;
+    background-position: center;
+}
+
+.psc-collection-placeholder {
+    background: repeating-linear-gradient(45deg, #2f333b, #2f333b 4px, #35393f 4px, #35393f 8px);
+}
+
+.psc-collection-more {
+    font-size: 11px;
+    color: #949ba4;
+    background: #35393f;
+    border-radius: 7px;
+    padding: 5px 7px;
+}
+
+.psc-list {
+    margin-top: 14px;
+    background: #232730;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.psc-list-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: left;
+}
+
+.psc-list-item:last-child {
+    border-bottom: none;
+}
+
+.psc-list-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.psc-list-icon {
+    color: #b8c0c9;
+    display: flex;
+}
+
+.psc-list-label {
+    flex: 1;
+    font-size: 13.5px;
+}
+
+.psc-chevron {
+    color: #6b7480;
+}
+
+.psc-badge-new {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: #e5484d;
+    padding: 2px 6px;
+    border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .psc-bubble-text {
+        transition: none;
+    }
+}

@@ -1,0 +1,98 @@
+.gwin-window {
+    max-width: calc(100vw - 32px);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.04) inset;
+    font-family: -apple-system, "Cantarell", "Inter", sans-serif;
+    will-change: transform, opacity;
+}
+
+.gwin-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 44px;
+    padding: 0 10px;
+    background: #2d2d30;
+    cursor: grab;
+    user-select: none;
+}
+
+.gwin-titlebar:active {
+    cursor: grabbing;
+}
+
+.gwin-titlebar-side {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 96px;
+    min-width: 32px;
+}
+
+.gwin-titlebar-side--right {
+    justify-content: flex-end;
+}
+
+.gwin-titlebar-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.1;
+    pointer-events: none;
+    max-width: 60%;
+}
+
+.gwin-title {
+    color: #f2f2f2;
+    font-size: 13.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.gwin-subtitle {
+    color: rgba(255, 255, 255, 0.38);
+    font-size: 10px;
+}
+
+.gwin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+}
+
+.gwin-btn-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+}
+
+.gwin-btn-icon:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.gwin-btn-close {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.gwin-btn-close:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.gwin-body {
+    background: #1e1e1e;
+    color: #e8e8e8;
+    overflow-y: auto;
+    max-height: 70vh;
+}
