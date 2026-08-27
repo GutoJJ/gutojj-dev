@@ -19,6 +19,9 @@ interface DockProps {
 }
 
 function Dock({ onOpenTerminal, onOpenBrave, isTerminalOpen, isBraveOpen }: DockProps) {
+
+  const appSize = 52; // Tamanho padrão dos ícones
+
   return (
     <div className="dock">
       <div className="dock-apps">
@@ -29,17 +32,17 @@ function Dock({ onOpenTerminal, onOpenBrave, isTerminalOpen, isBraveOpen }: Dock
             className="dock-button"
             aria-label="Abrir Brave"
           >
-            <img src={braveIcon} alt="Brave" width={55} height={55} />
+            <img src={braveIcon} alt="Brave" width={appSize} height={appSize} />
           </button>
           {isBraveOpen && <span className="dock-indicator" />}
         </div>
 
-        <img src={discordIcon} alt="Discord" width={55} height={55} />
-        <img src={spotifyIcon} alt="Spotify" width={55} height={55} />
-        <img src={steamIcon} alt="Steam" width={55} height={55} />
-        <img src={vscodeIcon} alt="VS Code" width={55} height={55} />
-        <img src={intellijIcon} alt="IntelliJ IDEA" width={55} height={55} />
-        <img src={nautilusIcon} alt="Nautilus" width={55} height={55} />
+        <img src={discordIcon} alt="Discord" width={appSize} height={appSize} />
+        <img src={spotifyIcon} alt="Spotify" width={appSize} height={appSize} />
+        <img src={steamIcon} alt="Steam" width={appSize} height={appSize} />
+        <img src={vscodeIcon} alt="VS Code" width={appSize} height={appSize} />
+        <img src={intellijIcon} alt="IntelliJ IDEA" width={appSize} height={appSize} />
+        <img src={nautilusIcon} alt="Nautilus" width={appSize} height={appSize} />
 
         <div className="dock-app">
           <button
@@ -48,7 +51,7 @@ function Dock({ onOpenTerminal, onOpenBrave, isTerminalOpen, isBraveOpen }: Dock
             className="dock-button"
             aria-label="Abrir terminal"
           >
-            <img src={terminalIcon} alt="Terminal" width={55} height={55} />
+            <img src={terminalIcon} alt="Terminal" width={appSize} height={appSize} />
           </button>
           {isTerminalOpen && <span className="dock-indicator" />}
         </div>
@@ -57,12 +60,12 @@ function Dock({ onOpenTerminal, onOpenBrave, isTerminalOpen, isBraveOpen }: Dock
       <div className="dock-line" />
 
       <div className="dock-apps dock-mobile">
-        <img src={trashIcon} alt="Lixeira" width={55} height={55} />
+        <img src={trashIcon} alt="Lixeira" width={appSize} height={appSize} />
         <img
           src={appGrid}
           alt="Grade de Aplicativos"
-          width={55}
-          height={55}
+          width={appSize}
+          height={appSize}
           style={{ filter: 'brightness(0) invert(1)' }}
         />
       </div>

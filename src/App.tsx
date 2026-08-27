@@ -14,8 +14,13 @@ function App() {
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const dragStartY = useRef<number | null>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
+    // Detecta se o dispositivo tem suporte a toque
+    const hasTouch = typeof window !== 'undefined' && (navigator.maxTouchPoints > 0 || 'ontouchstart' in window);
+    setIsTouchDevice(Boolean(hasTouch));
+
     const updateTime = () => {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
@@ -76,7 +81,7 @@ function App() {
         setScreen('user');
       }
 
-      if (event.key === 'Enter' && screen === 'user') {
+      if (event.key === 'Enter' || (event.code === 'Space' || event.key === ' ') && screen === 'user') {
         startTyping();
       }
 
@@ -138,6 +143,20 @@ function App() {
     dragStartY.current = null;
   };
 
+  const handleTap = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (isUnlocked || isTransitioning) return;
+
+    // Não alternar se o usuário clicou em um botão/elemento interativo
+    const target = event.target as HTMLElement | null;
+    if (target && target.closest('button, input, .fake-input')) return;
+
+    setScreen((prev) => (prev === 'clock' ? 'user' : 'clock'));
+  };
+
+  
+
+  const desktopHandlers = !isTouchDevice ? { onClick: handleTap } : {};
+
   // Fallback para dispositivos que não disparam PointerEvents corretamente
   const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
     dragStartY.current = event.touches[0]?.clientY ?? null;
@@ -157,6 +176,19 @@ function App() {
     dragStartY.current = null;
   };
 
+  // Handlers agrupados para spread condicional
+  const mobileHandlers = isTouchDevice
+    ? {
+        onPointerDown: handlePointerDown,
+        onPointerMove: handlePointerMove,
+        onPointerUp: handlePointerUp,
+        onPointerLeave: handlePointerUp,
+        onTouchStart: handleTouchStart,
+        onTouchMove: handleTouchMove,
+        onTouchEnd: handleTouchEnd,
+      }
+    : {};
+
   if (isUnlocked) {
     return <Teste />;
   }
@@ -164,14 +196,9 @@ function App() {
   return (
     <div className={`lock-screen ${isTransitioning ? 'unlocking' : ''}`}>
       <div
-        className={`screen-stage ${screen === 'user' ? 'user-visible' : ''}`}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        className={`screen-stage ${screen === 'user' ? 'user-visible' : ''} ${isTouchDevice ? 'touch-enabled' : ''}`}
+        {...mobileHandlers}
+        {...desktopHandlers}
       >
         <div className="clock-panel">
           <div className="time">{time}</div>

@@ -25,7 +25,7 @@
 }
 
 /* Garantir que os gestos de toque sejam entregues ao elemento (mobile) */
-.screen-stage {
+.screen-stage.touch-enabled {
     touch-action: none;
 }
 

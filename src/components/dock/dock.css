@@ -14,8 +14,7 @@
   padding: 10px;
   border-radius: 25px;
   animation: dockAppears 0.3s ease forwards;
-  z-index: 9999;
-  scale: 0.90;
+  scale: 1;
 }
 
 .dock-apps {
@@ -25,6 +24,9 @@
   justify-content: center;
   gap: 3px;
   animation: fadeIn 0.5s ease forwards;
+  img {
+    padding: 3px;
+  }
 }
 
 .dock-app {
