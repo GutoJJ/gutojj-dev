@@ -162,7 +162,7 @@
     transition: opacity 220ms ease, transform 220ms ease;
     pointer-events: 'auto';
     @media(max-width: 640px) {
-        margin-top: 27px;
+        margin-top: 33px;
     }
 }
 
