@@ -4,6 +4,7 @@ import Dock from './dock/dock.tsx';
 import Terminal from './terminal/terminal.tsx';
 import BraveResumeBrowser from './brave/brave.tsx';
 import Discord from './discord/discord.tsx';
+import '../App.tsx'
 
 type WindowName = 'terminal' | 'brave' | 'discord';
 type WindowState = Record<WindowName, boolean>;
@@ -59,20 +60,12 @@ const Workstation = () => {
     return (
       <div
         key={windowName}
+        className='window'
         onPointerDown={() => focusWindow(windowName)}
         style={{
-          position: 'absolute',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '0px',
-          left: '50%',
-          top: '50%',
           transform: closing[windowName] ? 'translate(-50%, -50%) scale(0.9)' : 'translate(-50%, -50%) scale(1)',
           zIndex: getWindowZIndex(windowName),
           opacity: closing[windowName] ? 0 : 1,
-          transition: 'opacity 220ms ease, transform 220ms ease',
-          pointerEvents: 'auto',
         }}
       >
         {content}

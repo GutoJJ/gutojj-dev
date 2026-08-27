@@ -113,7 +113,7 @@ function ProfileShowcaseCard({
                     <button type="button" className="psc-list-item">
                         <span className="psc-list-icon"><Pencil size={15} strokeWidth={2} /></span>
                         <span className="psc-list-label">Editar perfil</span>
-                        <span className="psc-badge-new">NOVO</span>
+                        {/* <span className="psc-badge-new">NOVO</span> */}
                     </button>
 
                     <button type="button" className="psc-list-item">

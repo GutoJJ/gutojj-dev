@@ -42,7 +42,8 @@
 }
 
 .clock-panel {
-    transform: translateY(0) scale(1); ;
+    transform: translateY(0) scale(1);
+    ;
     opacity: 1;
     gap: 1rem;
 }
@@ -150,12 +151,28 @@
     opacity: 1;
 }
 
+.window {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0px;
+    left: 50%;
+    top: 50%;
+    transition: opacity 220ms ease, transform 220ms ease;
+    pointer-events: 'auto';
+    @media(max-width: 640px) {
+        margin-top: 27px;
+    }
+}
+
 @keyframes screenFadeIn {
     from {
         opacity: 0;
         transform: translateY(12px) scale(0.98);
         filter: blur(12px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);

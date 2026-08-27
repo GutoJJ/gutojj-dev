@@ -548,11 +548,10 @@
         margin: 0;
         width: 100vw;
         height: 90vh;
-        margin-top: 5vh;
-            scale: 1.1;
+        scale: 1.1;
     }
 
-    .hero{
+    .hero {
         padding: 32px 24px 28px;
     }
 
@@ -563,6 +562,7 @@
     .footer {
         padding-bottom: 19vh;
     }
+
     .section {
         padding: 32px 24px;
     }
