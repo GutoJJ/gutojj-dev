@@ -552,12 +552,16 @@
             scale: 1.1;
     }
 
+    .hero{
+        padding: 32px 24px 28px;
+    }
+
     .brave-viewport {
         height: 100%;
     }
 
     .footer {
-        padding-bottom: 15vh;
+        padding-bottom: 19vh;
     }
     .section {
         padding: 32px 24px;

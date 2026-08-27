@@ -150,10 +150,12 @@ function App() {
     const target = event.target as HTMLElement | null;
     if (target && target.closest('button, input, .fake-input')) return;
 
-    setScreen((prev) => (prev === 'clock' ? 'user' : 'clock'));
+    if (screen === 'clock') {
+      setScreen('user');
+    }
   };
 
-  
+
 
   const desktopHandlers = !isTouchDevice ? { onClick: handleTap } : {};
 
@@ -179,14 +181,14 @@ function App() {
   // Handlers agrupados para spread condicional
   const mobileHandlers = isTouchDevice
     ? {
-        onPointerDown: handlePointerDown,
-        onPointerMove: handlePointerMove,
-        onPointerUp: handlePointerUp,
-        onPointerLeave: handlePointerUp,
-        onTouchStart: handleTouchStart,
-        onTouchMove: handleTouchMove,
-        onTouchEnd: handleTouchEnd,
-      }
+      onPointerDown: handlePointerDown,
+      onPointerMove: handlePointerMove,
+      onPointerUp: handlePointerUp,
+      onPointerLeave: handlePointerUp,
+      onTouchStart: handleTouchStart,
+      onTouchMove: handleTouchMove,
+      onTouchEnd: handleTouchEnd,
+    }
     : {};
 
   if (isUnlocked) {
