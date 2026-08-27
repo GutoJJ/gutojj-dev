@@ -75,7 +75,7 @@
     cursor: pointer;
 }
 
-.brave-winbtn-close{
+.brave-winbtn-close {
     font-size: 20px;
 }
 
@@ -542,6 +542,12 @@
 .reveal--visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+@media(max-width: 640px) {
+    .brave-window {
+        width: 90vw;
+    }
 }
 
 @keyframes pulse-dot {

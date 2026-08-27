@@ -56,7 +56,7 @@ function Dock({ onOpenTerminal, onOpenBrave, isTerminalOpen, isBraveOpen }: Dock
 
       <div className="dock-line" />
 
-      <div className="dock-apps">
+      <div className="dock-apps dock-mobile">
         <img src={trashIcon} alt="Lixeira" width={55} height={55} />
         <img
           src={appGrid}

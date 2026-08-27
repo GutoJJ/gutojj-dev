@@ -14,6 +14,7 @@
   padding: 10px;
   border-radius: 25px;
   animation: dockAppears 0.3s ease forwards;
+  z-index: 9999;
 }
 
 .dock-apps {
@@ -72,6 +73,31 @@
   height: 40px;
   width: 3px;
   background-color: rgba(255, 255, 255, 0.247);
+}
+
+@media (max-width: 600px) {
+  .dock {
+    gap: 5px;
+    padding: 5px;
+  }
+
+  .dock-apps {
+    gap: 2px;
+    img {
+      display: none;
+    }
+  }
+
+  .dock-mobile {
+    display: flex;
+    img {
+      display: block !important;
+    }
+  }
+
+  .dock-button img {
+    display: flex !important;
+  }
 }
 
 @keyframes dockAppears {

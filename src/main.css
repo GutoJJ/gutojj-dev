@@ -18,9 +18,10 @@ body {
         linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     background-blend-mode: screen;
 
-    /* background: url('./assets/bg.png');
+    /* background: url('./assets/bg.gif');
     background-size: cover;
-    background-position: center; */
+    background-position: center;
+    background-repeat: no-repeat; */
 
     width: 100vw;
     height: 100vh;

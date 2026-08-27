@@ -17,6 +17,8 @@
     font-size: 12px;
     letter-spacing: 0.02em;
     animation: topAppears 0.3s ease forwards;
+
+    z-index: 9999;
 }
 
 .topBar-center {
