@@ -1,4 +1,3 @@
-````md
 # Portfólio Terminal
 
 Portfolio pessoal em React + TypeScript com visual estilo terminal, inspirado em um shell Linux.
@@ -41,5 +40,4 @@ Este projeto apresenta:
 - Email: gutojung12@hotmail.com
 - GitHub: github.com/gutojj
 - LinkedIn: linkedin.com/in/gutojj
-````
 
