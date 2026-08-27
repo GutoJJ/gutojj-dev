@@ -9,7 +9,6 @@
     background: #14181d;
     will-change: transform, opacity;
     font-family: 'Inter', sans-serif;
-    scale: 1.1;
 }
 
 .brave-tabbar {
@@ -550,6 +549,7 @@
         width: 100vw;
         height: 90vh;
         margin-top: 5vh;
+            scale: 1.1;
     }
 
     .brave-viewport {

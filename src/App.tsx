@@ -138,6 +138,25 @@ function App() {
     dragStartY.current = null;
   };
 
+  // Fallback para dispositivos que não disparam PointerEvents corretamente
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    dragStartY.current = event.touches[0]?.clientY ?? null;
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (dragStartY.current === null || isUnlocked || isTransitioning) return;
+
+    const deltaY = event.touches[0]?.clientY - dragStartY.current;
+    if (Math.abs(deltaY) > 40) {
+      setScreen(deltaY < 0 ? 'user' : 'clock');
+      dragStartY.current = null;
+    }
+  };
+
+  const handleTouchEnd = () => {
+    dragStartY.current = null;
+  };
+
   if (isUnlocked) {
     return <Teste />;
   }
@@ -150,6 +169,9 @@ function App() {
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <div className="clock-panel">
           <div className="time">{time}</div>

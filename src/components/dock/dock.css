@@ -15,6 +15,7 @@
   border-radius: 25px;
   animation: dockAppears 0.3s ease forwards;
   z-index: 9999;
+  scale: 0.90;
 }
 
 .dock-apps {

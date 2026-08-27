@@ -24,6 +24,11 @@
     transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
 }
 
+/* Garantir que os gestos de toque sejam entregues ao elemento (mobile) */
+.screen-stage {
+    touch-action: none;
+}
+
 .clock-panel,
 .user-panel {
     position: absolute;
