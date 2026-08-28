@@ -5,20 +5,20 @@ import './terminal.css';
 // ---------------------------------------------------------------------------
 // Dados usados pelo neofetch / comandos de info
 // ---------------------------------------------------------------------------
-const USER = 'gutojf';
+const USER = 'gutojj';
 const HOST = 'fedora';
 
 const NEOFETCH_INFO: Array<[string, string]> = [
-    ['OS', 'Augusto Jung OS 44 x86_64'],
+    ['OS', 'GutoJJ OS 44 x86_64'],
     ['Host', 'Portfolio Desktop'],
     ['Kernel', 'Node.js + TypeScript'],
     ['Uptime', '2 anos, 4 meses (carreira)'],
     ['Packages', '15 (skills)'],
-    ['Shell', 'zsh 5.9'],
-    ['Resolution', 'Full Stack'],
-    ['DE', 'GNOME 50'],
-    ['WM', 'Mutter'],
-    ['Terminal', 'gutojf-term'],
+    ['Shell', 'bash 5.3.9'],
+    ['Resolution', 'Back End'],
+    ['DE', 'GNOME 50.4'],
+    ['WM', 'Mutter (Wayland)'],
+    ['Terminal', 'gutojj'],
     ['CPU', 'AWS (ECS / EC2 / RDS / S3)'],
     ['GPU', 'Gemini API'],
     ['Memory', 'Back-end · Cloud · Integrações'],
@@ -145,7 +145,7 @@ function runCommand(
             helpers.print(<pre className="neofetch-ascii">{ASCII_LOGO.join('\n')}</pre>);
             return;
         case 'whoami':
-            helpers.print('gutojf — Augusto Jung, Desenvolvedor Back-end');
+            helpers.print('gutojj — Augusto Jung, Desenvolvedor Back-end');
             return;
         case 'pwd':
             helpers.print(cwd);
