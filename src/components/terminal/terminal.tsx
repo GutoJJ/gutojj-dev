@@ -24,22 +24,19 @@ const NEOFETCH_INFO: Array<[string, string]> = [
     ['Memory', 'Back-end · Cloud · Integrações'],
 ];
 
-// Logo em ASCII — um "J" estilizado, no lugar do logo de distro que o neofetch normalmente mostra.
 const ASCII_LOGO = [
-    '              ########',
-    '                    ##',
-    '                    ##',
-    '                    ##',
-    '                    ##',
-    '                    ##',
-    '                    ##',
-    '                    ##',
-    '   ##               ##',
-    '   ##               ##',
-    '    ##             ##',
-    '     ##           ##',
-    '      #############',
-    '        #########',
+    'ㅤㅤㅤㅤㅤㅤ██╗',
+    'ㅤㅤㅤㅤㅤㅤ██║',
+    'ㅤㅤㅤㅤㅤㅤ██║',
+    'ㅤㅤㅤㅤㅤㅤ██║',
+    'ㅤㅤㅤㅤㅤㅤ██║',
+    'ㅤㅤㅤㅤㅤㅤ██║',
+    'ㅤㅤㅤㅤㅤㅤ██║',
+    'ㅤㅤㅤㅤㅤㅤ██║',
+    'ㅤㅤㅤㅤㅤㅤ██║',
+    'ㅤ██ㅤㅤㅤ██║',
+    'ㅤ╚██████╔╝',
+    'ㅤㅤ╚═════╝',
 ];
 
 const FILES: Record<string, string> = {
@@ -132,7 +129,13 @@ function runCommand(
         case '':
             return;
         case 'help':
-            HELP_TEXT.forEach((l) => helpers.print(l));
+            HELP_TEXT.forEach((l) =>
+                helpers.print(
+                    <pre className="nfterm-help-line" style={{ margin: 0 }}>
+                        {l}
+                    </pre>,
+                ),
+            );
             return;
         case 'neofetch':
         case 'fastfetch':
