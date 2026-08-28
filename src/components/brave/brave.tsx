@@ -46,7 +46,7 @@ const SKILL_GROUPS = [
 
 const EDUCATION = [
     { title: 'Informática', place: 'Escola Técnica Estadual Monteiro Lobato (CIMOL) · Curso Técnico', period: '2022 — 2024' },
-    { title: 'Dev the Devs', place: 'PUCRS · Curso', period: '11/2021 — 05/2022' },
+    { title: 'Dev the Devs', place: 'PUCRS · Curso', period: '2021 — 2022' },
 ];
 
 const CERTIFICATIONS = [
@@ -208,6 +208,7 @@ function BraveResumeBrowser({ onClose }: BraveResumeBrowserProps) {
                                 <a className="hero-link hero-link--primary" href={`mailto:${CONTACT.email}`}>Falar comigo</a>
                                 <a className="hero-link" href={`https://${CONTACT.github}`} target="_blank" rel="noreferrer">GitHub</a>
                                 <a className="hero-link" href={`https://${CONTACT.linkedin}`} target="_blank" rel="noreferrer">LinkedIn</a>
+                                <a className="hero-link" download={"CV_Augusto Jung"} href={cvPdf} target="_blank" rel="noreferrer">Baixar PDF</a>
                             </div>
                         </div>
                     </section>
