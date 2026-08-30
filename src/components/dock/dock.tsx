@@ -3,7 +3,7 @@ import './dock.css';
 import braveIcon from '../../assets/dock/brave.svg';
 import discordIcon from '../../assets/dock/discord.svg';
 import spotifyIcon from '../../assets/dock/spotify-client.svg';
-import steamIcon from '../../assets/dock/steam.svg';
+import postmanIcon from '../../assets/dock/postman.svg';
 import vscodeIcon from '../../assets/dock/vscode.svg';
 import intellijIcon from '../../assets/dock/intellij-idea-ce.svg';
 import nautilusIcon from '../../assets/dock/nautilus_org.gnome.Nautilus.png';
@@ -15,12 +15,14 @@ interface DockProps {
   onOpenTerminal?: () => void;
   onOpenBrave?: () => void;
   onOpenDiscord?: () => void;
+  onOpenPostman?: () => void;
   isTerminalOpen?: boolean;
   isBraveOpen?: boolean;
   isDiscordOpen?: boolean;
+  isPostmanOpen?: boolean;
 }
 
-function Dock({ onOpenTerminal, onOpenBrave, onOpenDiscord, isTerminalOpen, isBraveOpen, isDiscordOpen }: DockProps) {
+function Dock({ onOpenTerminal, onOpenBrave, onOpenDiscord, onOpenPostman, isPostmanOpen, isTerminalOpen, isBraveOpen, isDiscordOpen }: DockProps) {
 
   const appSize = 52;
 
@@ -51,7 +53,20 @@ function Dock({ onOpenTerminal, onOpenBrave, onOpenDiscord, isTerminalOpen, isBr
           {isDiscordOpen && <span className="dock-indicator" />}
         </div>
         <img src={spotifyIcon} alt="Spotify" width={appSize} height={appSize} />
-        <img src={steamIcon} alt="Steam" width={appSize} height={appSize} />
+
+        {/* <div className="dock-app">
+          <button
+            type="button"
+            onClick={onOpenPostman}
+            className="dock-button"
+            aria-label="Abrir Postman"
+          >
+            <img src={postmanIcon} alt="Steam" width={appSize} height={appSize} />
+          </button>
+          {isPostmanOpen && <span className="dock-indicator" />}
+        </div>
+         */}
+         <img src={postmanIcon} alt="Steam" width={appSize} height={appSize} />
         <img src={vscodeIcon} alt="VS Code" width={appSize} height={appSize} />
         <img src={intellijIcon} alt="IntelliJ IDEA" width={appSize} height={appSize} />
         <img src={nautilusIcon} alt="Nautilus" width={appSize} height={appSize} />

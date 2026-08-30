@@ -9,7 +9,7 @@ const USER = 'gutojj';
 const HOST = 'fedora';
 
 const NEOFETCH_INFO: Array<[string, string]> = [
-    ['OS', 'GutoJJ OS 44 x86_64'],
+    ['OS', 'GutoJJ OS 45 x86_64'],
     ['Host', 'Portfolio Desktop'],
     ['Kernel', 'Node.js + TypeScript'],
     ['Uptime', '2 anos, 4 meses (carreira)'],
@@ -114,6 +114,7 @@ function runCommand(
         history: string[];
         onOpenBrave?: () => void;
         onOpenDiscord?: () => void;
+        onOpenPostman?: () => void;
         onClose?: () => void;
     },
 ) {
@@ -212,6 +213,10 @@ function runCommand(
             helpers.print('Abrindo Discord...');
             helpers.onOpenDiscord?.();
             return;
+        case 'postman':
+            helpers.print('Forçando inicio do Postman...')
+            helpers.onOpenPostman?.()
+            return;
         case 'github':
             helpers.print('Abrindo github.com/gutojj ...');
             openLink('https://github.com/gutojj');
@@ -250,10 +255,11 @@ interface NeofetchTerminalProps {
     cwd?: string;
     onOpenBrave?: () => void;
     onOpenDiscord?: () => void;
+    onOpenPostman?: () => void;
     onClose?: () => void;
 }
 
-function NeofetchTerminal({ host = HOST, cwd = '~', onOpenBrave, onOpenDiscord, onClose }: NeofetchTerminalProps) {
+function NeofetchTerminal({ host = HOST, cwd = '~', onOpenBrave, onOpenPostman,  onOpenDiscord, onClose }: NeofetchTerminalProps) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [mounted, setMounted] = useState(false);
     const [dragging, setDragging] = useState(false);
@@ -322,9 +328,9 @@ function NeofetchTerminal({ host = HOST, cwd = '~', onOpenBrave, onOpenDiscord, 
         if (cmdLine.trim()) historyRef.current = [...historyRef.current, cmdLine];
         setHistoryIndex(null);
 
-        runCommand(cmdLine, cwd, { print, clear, history: historyRef.current, onOpenBrave, onOpenDiscord, onClose });
+        runCommand(cmdLine, cwd, { print, clear, history: historyRef.current, onOpenBrave, onOpenDiscord, onOpenPostman, onClose });
         setInput('');
-    }, [input, host, cwd, print, clear, onOpenBrave, onOpenDiscord, onClose]);
+    }, [input, host, cwd, print, clear, onOpenBrave, onOpenDiscord, onOpenPostman, onClose]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

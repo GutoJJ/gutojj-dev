@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TopBar from './topBar/topBar.tsx';
 import Dock from './dock/dock.tsx';
 import Terminal from './terminal/terminal.tsx';
 import BraveResumeBrowser from './brave/brave.tsx';
 import Discord from './discord/discord.tsx';
+import Postman from './postman/postman.tsx'
 import '../App.tsx'
 
-type WindowName = 'terminal' | 'brave' | 'discord';
+type WindowName = 'terminal' | 'brave' | 'discord' | 'postman';
 type WindowState = Record<WindowName, boolean>;
 
 const WINDOW_BASE_Z = 10;
@@ -16,12 +17,14 @@ const Workstation = () => {
     terminal: false,
     brave: false,
     discord: false,
+    postman: false,
   });
 
   const [closing, setClosing] = useState<WindowState>({
     terminal: false,
     brave: false,
     discord: false,
+    postman: false,
   });
 
   const [windowOrder, setWindowOrder] = useState<WindowName[]>([]);
@@ -54,6 +57,35 @@ const Workstation = () => {
     }, 220);
   };
 
+  const handlePowerOff = () => {
+    // trigger close animation for any open windows, then exit desktop
+    setClosing((prev) => ({
+      terminal: show.terminal ? true : prev.terminal,
+      brave: show.brave ? true : prev.brave,
+      discord: show.discord ? true : prev.discord,
+      postman: show.postman ? true : prev.postman,
+    }));
+
+    // wait same duration as individual closeWindow before hiding windows
+    setTimeout(() => {
+      setShow({ terminal: false, brave: false, discord: false, postman: false });
+      setClosing({ terminal: false, brave: false, discord: false, postman: false });
+      setWindowOrder([]);
+      window.triggerDesktopExit?.();
+    }, 220);
+  };
+
+  useEffect(() => {
+    const handleDesktopExit = () => {
+      setShow({ terminal: false, brave: false, discord: false, postman: false });
+      setClosing({ terminal: false, brave: false, discord: false, postman: false });
+      setWindowOrder([]);
+    };
+
+    window.addEventListener('desktop-exit', handleDesktopExit);
+    return () => window.removeEventListener('desktop-exit', handleDesktopExit);
+  }, []);
+
   const renderWindow = (windowName: WindowName, isOpen: boolean, content: React.ReactNode) => {
     if (!isOpen) return null;
 
@@ -75,14 +107,16 @@ const Workstation = () => {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-      <TopBar />
+      <TopBar onPowerOff={handlePowerOff} />
       <Dock
         onOpenTerminal={() => openWindow('terminal')}
         onOpenBrave={() => openWindow('brave')}
         onOpenDiscord={() => openWindow('discord')}
+        onOpenPostman={() => openWindow('postman')}
         isTerminalOpen={show.terminal}
         isBraveOpen={show.brave}
         isDiscordOpen={show.discord}
+        isPostmanOpen={show.postman}
       />
 
       {renderWindow(
@@ -91,11 +125,13 @@ const Workstation = () => {
         <Terminal
           onOpenBrave={() => openWindow('brave')}
           onOpenDiscord={() => openWindow('discord')}
+          onOpenPostman={() => openWindow('postman')}
           onClose={() => closeWindow('terminal')}
         />,
       )}
       {renderWindow('brave', show.brave, <BraveResumeBrowser onClose={() => closeWindow('brave')} />)}
       {renderWindow('discord', show.discord, <Discord onClose={() => closeWindow('discord')} />)}
+      {renderWindow('postman', show.postman, <Postman onClose={() => closeWindow('postman')} />)}
     </div>
   );
 };

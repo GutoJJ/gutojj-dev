@@ -43,8 +43,8 @@ function App() {
 
   const startTyping = () => {
     if (isUnlocked || isTransitioning || isTyping) return;
-    setTypedBalls(0);
     setIsTyping(true);
+    setTypedBalls(0);
   };
 
   useEffect(() => {
@@ -81,7 +81,7 @@ function App() {
         setScreen('user');
       }
 
-      if (event.key === 'Enter' || (event.code === 'Space' || event.key === ' ') && screen === 'user') {
+      if ((event.key === 'Enter' || event.code === 'Space' || event.key === ' ') && screen === 'user' && !isTyping) {
         startTyping();
       }
 
@@ -97,7 +97,7 @@ function App() {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isUnlocked, isTransitioning, screen]);
+  }, [isUnlocked, isTransitioning, screen, isTyping]);
 
   useEffect(() => {
     if (!isTyping) return;
@@ -155,7 +155,28 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    const handleDesktopExit = () => {
+      setIsTyping(false);
+      setTypedBalls(0);
+      setScreen('clock');
+      setIsTransitioning(true);
 
+      window.setTimeout(() => {
+        setIsUnlocked(false);
+        setIsTransitioning(false);
+        document.body.classList.remove('desktop-exit');
+        const gradient = document.getElementById('gradient');
+        gradient?.classList.remove('gradient-fading');
+      }, 620);
+    };
+
+    window.addEventListener('desktop-exit', handleDesktopExit);
+
+    return () => {
+      window.removeEventListener('desktop-exit', handleDesktopExit);
+    };
+  }, []);
 
   const desktopHandlers = !isTouchDevice ? { onClick: handleTap } : {};
 

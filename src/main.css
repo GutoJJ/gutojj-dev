@@ -7,32 +7,75 @@
     font-family: 'Inter', sans-serif;
 }
 
+html,
+body,
+#root {
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+}
+
+#root {
+    position: relative;
+    isolation: isolate;
+}
+
+#gradient {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: calc(100% + 60px) !important;
+    display: block;
+    z-index: 0;
+    pointer-events: none;
+    animation: fadeIn 1s ease;
+}
+
+#gradient.gradient-fading {
+    animation: gradientFadeOut 0.9s ease forwards;
+}
+
+body.desktop-exit {
+    overflow: hidden;
+}
+
+body.desktop-exit .topBar,
+body.desktop-exit .dock {
+    pointer-events: none;
+}
+
+body.desktop-exit .topBar {
+    animation: topBarExit 0.5s ease forwards !important;
+}
+
+body.desktop-exit .dock {
+    animation: dockExit 0.5s ease forwards !important;
+}
+
+body.desktop-exit .topBar-left,
+body.desktop-exit .topBar-center,
+body.desktop-exit .topBar-right,
+body.desktop-exit .topBar-usage,
+body.desktop-exit .topBar-lang,
+body.desktop-exit .topBar-sys-icons,
+body.desktop-exit .dock-apps {
+    animation: uiExit 0.45s ease forwards !important;
+}
+
 body {
 
     min-height: 100vh;
     margin: 0;
-     background:
-    /* brilho quente, canto superior direito — como luz baixa de sol */
+    /* background:
     radial-gradient(60% 55% at 82% 12%, rgba(233, 225, 205, 0.5) 0%, rgba(233, 225, 205, 0) 60%),
-
-    /* mancha bronze, meio-direita — profundidade de cor */
     radial-gradient(75% 65% at 78% 55%, rgba(146, 119, 86, 0.55) 0%, rgba(146, 119, 86, 0) 65%),
-
-    /* névoa verde-azulada, canto inferior esquerdo */
     radial-gradient(90% 80% at 12% 85%, rgba(70, 103, 91, 0.6) 0%, rgba(70, 103, 91, 0) 60%),
-
-    /* glow central suave, ancora a composição */
     radial-gradient(120% 100% at 50% 60%, #2a3a45 0%, #1a1c30 65%),
-
-    /* base, garante transição completa nas bordas */
     linear-gradient(160deg, #1a1c30 0%, #1a1c30 20%, #46675b 55%, #1a1c30 100%);
 
-  background-blend-mode: screen, screen, screen, normal, normal;
+  background-blend-mode: screen, screen, screen, normal, normal; */
 
-    /* background: url('./assets/bg.gif');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; */
+    background-color: #1f1f1f;
 
     width: 100vw;
     height: 100vh;
@@ -40,8 +83,54 @@ body {
     overflow: hidden;
 }
 
+.wst-bg {
+    background:
+        radial-gradient(60% 55% at 82% 12%, rgba(233, 225, 205, 0.5) 0%, rgba(233, 225, 205, 0) 60%),
+        radial-gradient(75% 65% at 78% 55%, rgba(146, 119, 86, 0.55) 0%, rgba(146, 119, 86, 0) 65%),
+        radial-gradient(90% 80% at 12% 85%, rgba(70, 103, 91, 0.6) 0%, rgba(70, 103, 91, 0) 60%),
+        radial-gradient(120% 100% at 50% 60%, #2a3a45 0%, #1a1c30 65%),
+        linear-gradient(160deg, #1a1c30 0%, #1a1c30 20%, #46675b 55%, #1a1c30 100%);
+
+    background-blend-mode: screen, screen, screen, normal, normal;
+}
+
 .inactive {
     opacity: 0;
     display: none !important;
     pointer-events: none;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+}
+
+@keyframes gradientFadeOut {
+    0% {
+        opacity: 1;
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 0;
+        filter: blur(18px);
+    }
+}
+
+@keyframes uiExit {
+    0% {
+        opacity: 1;
+        /* transform: translateY(0); */
+    }
+
+    100% {
+        opacity: 0;
+        /* transform: translateY(-12px); */
+    }
 }

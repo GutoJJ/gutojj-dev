@@ -13,7 +13,7 @@
     justify-content: space-between;
     height: 44px;
     padding: 0 10px;
-    background: #2d2d30;
+    background: #222226;
     cursor: grab;
     user-select: none;
 }
@@ -91,8 +91,34 @@
 }
 
 .gwin-body {
-    background: #1e1e1e;
+    background: #1c1c1f;
     color: #e8e8e8;
     overflow-y: auto;
     max-height: 70vh;
+}
+
+.window {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0px;
+    left: 50%;
+    top: 50%;
+    transition: opacity 220ms ease, transform 220ms ease;
+    pointer-events: auto;
+}
+
+@keyframes screenFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+        filter: blur(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
 }

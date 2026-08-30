@@ -15,7 +15,7 @@
     justify-content: space-between;
     height: 44px;
     padding: 0 10px;
-    background: #2d2d30;
+    background: #222226;
     cursor: grab;
     user-select: none;
 }
@@ -95,7 +95,7 @@
 }
 
 .nfterm-body {
-    background: #1b1b1b;
+    background: #1c1c1f;
     height: 480px;
     overflow-y: auto;
     padding: 14px 16px;
@@ -103,7 +103,7 @@
     line-height: 1.55;
     color: #ebdbb2;
     cursor: text;
-    p, span {
+    p, span, input, .nfterm-line, .nfterm-line--error {
         font-family: "JetBrains Mono", monospace;
     }
 }

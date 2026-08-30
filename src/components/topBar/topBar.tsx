@@ -41,7 +41,7 @@ function useDriftingValue(initial: number, min: number, max: number, maxStep: nu
     return value;
 }
 
-function TopBar() {
+function TopBar({ onPowerOff }: { onPowerOff?: () => void }) {
     const [now, setNow] = useState<Date>(new Date());
 
     const memory = useDriftingValue(42, 30, 60, 6);
@@ -90,13 +90,13 @@ function TopBar() {
                 </div>
                 <div
                     className="topBar-sys-icons"
-                    onClick={() => window.location.reload()}
+                    onClick={() => onPowerOff ? onPowerOff() : window.triggerDesktopExit?.()}
                     role="button"
                     tabIndex={0}
                     onKeyDown={(event) => {
                         if (event.key === 'Enter' || event.key === ' ') {
                             event.preventDefault();
-                            window.location.reload();
+                            onPowerOff ? onPowerOff() : window.triggerDesktopExit?.();
                         }
                     }}
                 >
