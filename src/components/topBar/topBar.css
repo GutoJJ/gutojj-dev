@@ -127,14 +127,29 @@
 }
 
 @media (max-width: 768px) {
-    .topBar-left,
-    .topBar-right {
+    .topBar-left {
         display: none;
     }
 
     .topBar-center {
-        width: 100%;
-        justify-content: center;
+        width: fit-content;
+        justify-content: flex-start;
+    }
+
+    .topBar-sys-icons{
+        svg{
+            display: none;
+        }
+        .topBar-mob{
+            display: flex;
+        }
+    }
+
+    .topBar-date{
+        display: none;
+    }
+    .topBar-lang{
+        display: none;
     }
 }
 

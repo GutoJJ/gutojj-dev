@@ -101,10 +101,10 @@ function TopBar({ onPowerOff }: { onPowerOff?: () => void }) {
                     }}
                 >
                     <Network strokeWidth={3} size={17} />
-                    <Bluetooth strokeWidth={3} size={17} />
-                    <Volume2 strokeWidth={3} size={17} />
+                    <Bluetooth strokeWidth={3} size={17} className='topBar-mob' />
+                    <Volume2 strokeWidth={3} size={17} className='topBar-mob'/>
                     <Gauge strokeWidth={3} size={17} />
-                    <Power strokeWidth={3} size={17} />
+                    <Power strokeWidth={3} size={17} className='topBar-mob'/>
                 </div>
             </div>
         </div>

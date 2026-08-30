@@ -143,16 +143,16 @@ function App() {
     dragStartY.current = null;
   };
 
-  const handleTap = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleTap = (event: React.SyntheticEvent<HTMLDivElement>) => {
     if (isUnlocked || isTransitioning) return;
-
-    // Não alternar se o usuário clicou em um botão/elemento interativo
-    const target = event.target as HTMLElement | null;
-    if (target && target.closest('button, input, .fake-input')) return;
 
     if (screen === 'clock') {
       setScreen('user');
+      return;
     }
+
+    const target = (event.target as HTMLElement) ?? null;
+    if (target && target.closest('button, input, .fake-input')) return;
   };
 
   useEffect(() => {
@@ -209,6 +209,7 @@ function App() {
       onTouchStart: handleTouchStart,
       onTouchMove: handleTouchMove,
       onTouchEnd: handleTouchEnd,
+      onClick: handleTap,
     }
     : {};
 
