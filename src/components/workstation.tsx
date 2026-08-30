@@ -106,7 +106,7 @@ const Workstation = () => {
   };
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh' }}>
+    <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden' }}>
       <TopBar onPowerOff={handlePowerOff} />
       <Dock
         onOpenTerminal={() => openWindow('terminal')}

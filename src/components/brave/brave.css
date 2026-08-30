@@ -31,7 +31,7 @@
     align-items: center;
     gap: 8px;
     background: #262c34;
-    border-radius: 8px 8px 0 0;
+    border-radius: 8px;
     padding: 6px 12px;
     font-size: 12.5px;
     color: #d7dde3;
@@ -111,7 +111,7 @@
     align-items: center;
     gap: 8px;
     background: #262c34;
-    border-radius: 999px;
+    border-radius: 8px;
     padding: 6px 14px;
     font-size: 12.5px;
     color: #b8c0c9;
@@ -547,9 +547,8 @@
     .brave-window {
         margin: 0;
         width: 100vw;
-        height: 90vh;
-        scale: 1.1;
-        margin-top: 33px;
+        height: 75vh;
+        scale: 1;
     }
 
     .hero {

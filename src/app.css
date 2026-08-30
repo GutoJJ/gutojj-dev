@@ -154,3 +154,9 @@
     transform: scale(1);
     opacity: 1;
 }
+
+.gwin-titlebar,
+.nfterm-titlebar,
+.gterm-titlebar {
+    touch-action: none;
+}
