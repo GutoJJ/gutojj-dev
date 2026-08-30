@@ -22,7 +22,7 @@ interface DockProps {
   isPostmanOpen?: boolean;
 }
 
-function Dock({ onOpenTerminal, onOpenBrave, onOpenDiscord, onOpenPostman, isPostmanOpen, isTerminalOpen, isBraveOpen, isDiscordOpen }: DockProps) {
+function Dock({ onOpenTerminal, onOpenBrave, onOpenDiscord, isTerminalOpen, isBraveOpen, isDiscordOpen }: DockProps) {
 
   const appSize = 52;
 
