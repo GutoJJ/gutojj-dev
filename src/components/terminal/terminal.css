@@ -2,7 +2,7 @@
 
 .nfterm-window {
     width: 800px;
-    max-width: calc(100vw - 32px);
+    max-width: calc(100vw - 15px);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.04) inset;

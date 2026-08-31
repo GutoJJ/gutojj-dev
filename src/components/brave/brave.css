@@ -2,7 +2,7 @@
 
 .brave-window {
     width: 960px;
-    max-width: calc(100vw - 32px);
+    max-width: calc(100vw - 15px);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
@@ -545,9 +545,8 @@
 
 @media(max-width: 640px) {
     .brave-window {
-        margin: 0;
-        width: 100vw;
-        height: 75vh;
+        height: 73vh;
+        /* margin-bottom: 50px; */
         scale: 1;
     }
 

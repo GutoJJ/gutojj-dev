@@ -429,6 +429,7 @@ function NeofetchTerminal({ host = HOST, cwd = '~', onOpenBrave, onOpenPostman, 
                         autoFocus
                         spellCheck={false}
                         autoComplete="off"
+                        autoCapitalize='none'
                     />
                 </form>
             </div>

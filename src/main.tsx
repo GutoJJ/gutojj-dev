@@ -12,14 +12,14 @@ declare global {
 
 const backgroundConfig: NeatConfig = {
   colors: [
-    { color: '#37404A', enabled: true },
-    { color: '#707074', enabled: true },
-    { color: '#5C5C5F', enabled: true },
-    { color: '#252B3A', enabled: true },
-    { color: '#455056', enabled: true },
-    { color: '#B8D4E6', enabled: false },
+    { color: '#1A1C30', enabled: true },
+    { color: '#2A3A45', enabled: true },
+    { color: '#46675B', enabled: true },
+    { color: '#002027', enabled: true },
+    { color: '#242438', enabled: true },
+    { color: '#1e9a54', enabled: false },
   ],
-  speed: 1,
+  speed: 2,
   horizontalPressure: 3,
   verticalPressure: 5,
   waveFrequencyX: 1,
