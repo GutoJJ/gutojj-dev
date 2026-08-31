@@ -19,7 +19,7 @@ const backgroundConfig: NeatConfig = {
     { color: '#242438', enabled: true },
     { color: '#1e9a54', enabled: false },
   ],
-  speed: 2,
+  speed: 1,
   horizontalPressure: 3,
   verticalPressure: 5,
   waveFrequencyX: 1,
