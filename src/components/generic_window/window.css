@@ -107,6 +107,9 @@
     top: 50%;
     transition: opacity 220ms ease, transform 220ms ease;
     pointer-events: auto;
+    @media(max-width:640px) {
+        top: 47%;
+    }
 }
 
 @keyframes screenFadeIn {

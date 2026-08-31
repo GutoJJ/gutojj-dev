@@ -3,6 +3,7 @@
 .brave-window {
     width: 960px;
     max-width: calc(100vw - 15px);
+    max-height: 95vh;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
@@ -126,7 +127,8 @@
 }
 
 .brave-viewport {
-    height: 620px;
+    height: min(620px, calc(100vh - 220px));
+    max-height: calc(100vh - 120px);
     overflow-y: auto;
     background: #0f1720;
     scrollbar-width: thin;
@@ -543,9 +545,10 @@
     transform: translateY(0);
 }
 
-@media(max-width: 640px) {
+@media (max-width: 640px) {
     .brave-window {
-        height: 73vh;
+        max-height: 73vh;
+        height: auto;
         /* margin-bottom: 50px; */
         scale: 1;
     }
@@ -555,7 +558,7 @@
     }
 
     .brave-viewport {
-        height: 100%;
+        height: calc(73vh - 120px);
     }
 
     .footer {
