@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Plus, LayoutGrid, Menu, X } from 'lucide-react';
-import './window.css'
+import { Plus, LayoutGrid, Menu, X, Square } from 'lucide-react';
+import './window.css';
 
 interface GnomeWindowProps {
     title: string;
@@ -9,8 +9,9 @@ interface GnomeWindowProps {
     children: React.ReactNode;
     onClose?: () => void;
     showExtraControls?: boolean;
+    allowFullscreen?: boolean;
+    onMaximizeChange?: (isMaximized: boolean) => void;
 }
-
 
 function Window({
     title,
@@ -19,10 +20,14 @@ function Window({
     children,
     onClose,
     showExtraControls = true,
+    allowFullscreen = false,
+    onMaximizeChange,
 }: GnomeWindowProps) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [mounted, setMounted] = useState(false);
     const [dragging, setDragging] = useState(false);
+    const [isMaximized, setIsMaximized] = useState(false);
+    const windowRef = useRef<HTMLDivElement | null>(null);
     const dragState = useRef<{ startX: number; startY: number; originX: number; originY: number } | null>(null);
 
     useEffect(() => {
@@ -30,8 +35,27 @@ function Window({
         return () => cancelAnimationFrame(id);
     }, []);
 
+    const onMaximizeChangeRef = useRef(onMaximizeChange);
+    useEffect(() => {
+        onMaximizeChangeRef.current = onMaximizeChange;
+    });
+
+    useEffect(() => {
+        onMaximizeChangeRef.current?.(isMaximized);
+    }, [isMaximized]);
+
+    const toggleMaximize = useCallback(() => {
+        if (!allowFullscreen) return;
+        setIsMaximized((prev) => !prev);
+    }, [allowFullscreen]);
+
+    const handleDoubleClick = useCallback((e: React.MouseEvent) => {
+        if (!allowFullscreen || (e.target as HTMLElement).closest('.gwin-btn')) return;
+        toggleMaximize();
+    }, [allowFullscreen, toggleMaximize]);
+
     const handlePointerDown = useCallback((e: React.PointerEvent) => {
-        if ((e.target as HTMLElement).closest('.gwin-btn')) return;
+        if (isMaximized || (e.target as HTMLElement).closest('.gwin-btn')) return;
 
         dragState.current = {
             startX: e.clientX,
@@ -41,36 +65,64 @@ function Window({
         };
         setDragging(true);
         (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    }, [position]);
+    }, [position, isMaximized]);
 
     const handlePointerMove = useCallback((e: React.PointerEvent) => {
-        if (!dragState.current) return;
+        if (!dragState.current || isMaximized) return;
+
+        const rect = windowRef.current?.getBoundingClientRect();
+        // Calculate current top edge of the window element relative to viewport
+        // If rect is present, currentTop is rect.top
+        // We want currentTop + (newY - position.y) >= 33 (topBar height)
+        // Therefore, (newY - position.y) >= 33 - currentTop
+        // => newY >= position.y + (33 - currentTop)
+        const currentTop = rect ? rect.top : 33;
+        const minY = position.y + (33 - currentTop);
+
+        const maxY = window.innerHeight / 2 - 40;
+        const maxX = window.innerWidth / 2 - 40;
+        const minX = -(window.innerWidth / 2 - 40);
+
+        const newX = dragState.current.originX + (e.clientX - dragState.current.startX);
+        const newY = dragState.current.originY + (e.clientY - dragState.current.startY);
+
         setPosition({
-            x: dragState.current.originX + (e.clientX - dragState.current.startX),
-            y: dragState.current.originY + (e.clientY - dragState.current.startY),
+            x: Math.min(maxX, Math.max(minX, newX)),
+            y: Math.max(minY, Math.min(maxY, newY)),
         });
-    }, []);
+    }, [isMaximized, position]);
 
     const handlePointerUp = useCallback((e: React.PointerEvent) => {
         dragState.current = null;
         setDragging(false);
-        (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+        if ((e.target as HTMLElement).releasePointerCapture) {
+            try {
+                (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+            } catch {
+                // ignore
+            }
+        }
     }, []);
 
     return (
         <div
-            className="gwin-window"
+            ref={windowRef}
+            className={`gwin-window ${isMaximized ? 'maximized' : ''}`}
             style={{
-                width,
-                transform: `translate(${position.x}px, ${position.y}px) scale(${mounted ? 1 : 0.94})`,
+                width: isMaximized ? undefined : width,
+                transform: isMaximized
+                    ? 'translate(0, 0) scale(1)'
+                    : `translate(${position.x}px, ${position.y}px) scale(${mounted ? 1 : 0.88})`,
                 opacity: mounted ? 1 : 0,
+                filter: mounted ? 'blur(0px)' : 'blur(10px)',
                 transition: dragging
                     ? 'none'
-                    : 'opacity 220ms cubic-bezier(0.22,1,0.36,1), transform 220ms cubic-bezier(0.22,1,0.36,1)',
+                    : 'transform 460ms cubic-bezier(0.16, 1, 0.3, 1), width 460ms cubic-bezier(0.16, 1, 0.3, 1), height 460ms cubic-bezier(0.16, 1, 0.3, 1), top 460ms cubic-bezier(0.16, 1, 0.3, 1), left 460ms cubic-bezier(0.16, 1, 0.3, 1), border-radius 460ms cubic-bezier(0.16, 1, 0.3, 1), opacity 380ms cubic-bezier(0.16, 1, 0.3, 1), filter 380ms cubic-bezier(0.16, 1, 0.3, 1)',
             }}
         >
             <div
                 className="gwin-titlebar"
+                onDoubleClick={handleDoubleClick}
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
@@ -99,6 +151,16 @@ function Window({
                             </button>
                         </>
                     )}
+                    {allowFullscreen && (
+                        <button
+                            type="button"
+                            className="gwin-btn gwin-btn-icon"
+                            aria-label={isMaximized ? "Restaurar" : "Tela Cheia"}
+                            onClick={toggleMaximize}
+                        >
+                            <Square size={13} strokeWidth={2.2} />
+                        </button>
+                    )}
                     <button type="button" className="gwin-btn gwin-btn-close" aria-label="Fechar" onClick={onClose}>
                         <X size={13} strokeWidth={2.6} />
                     </button>
@@ -106,7 +168,6 @@ function Window({
             </div>
 
             <div className="gwin-body">{children}</div>
-
         </div>
     );
 }

@@ -4,8 +4,7 @@ import Dock from './dock/dock.tsx';
 import Terminal from './terminal/terminal.tsx';
 import BraveResumeBrowser from './brave/brave.tsx';
 import Discord from './discord/discord.tsx';
-import Postman from './postman/postman.tsx'
-import '../App.tsx'
+import Postman from './postman/postman.tsx';
 
 type WindowName = 'terminal' | 'brave' | 'discord' | 'postman';
 type WindowState = Record<WindowName, boolean>;
@@ -29,6 +28,16 @@ const Workstation = () => {
 
   const [windowOrder, setWindowOrder] = useState<WindowName[]>([]);
 
+  const [maximizedWindows, setMaximizedWindows] = useState<WindowState>({
+    terminal: false,
+    brave: false,
+    discord: false,
+    postman: false,
+  });
+
+  const isAnyMaximized = Object.values(maximizedWindows).some(Boolean);
+
+
   const focusWindow = (windowName: WindowName) => {
     setWindowOrder((prev) => {
       const next = prev.filter((item) => item !== windowName);
@@ -49,36 +58,37 @@ const Workstation = () => {
 
   const closeWindow = (windowName: WindowName) => {
     setClosing((prev) => ({ ...prev, [windowName]: true }));
+    setMaximizedWindows((prev) => ({ ...prev, [windowName]: false }));
 
     setTimeout(() => {
       setShow((prev) => ({ ...prev, [windowName]: false }));
       setClosing((prev) => ({ ...prev, [windowName]: false }));
       setWindowOrder((prev) => prev.filter((item) => item !== windowName));
-    }, 220);
+    }, 460);
   };
 
   const handlePowerOff = () => {
-    // trigger close animation for any open windows, then exit desktop
     setClosing((prev) => ({
       terminal: show.terminal ? true : prev.terminal,
       brave: show.brave ? true : prev.brave,
       discord: show.discord ? true : prev.discord,
       postman: show.postman ? true : prev.postman,
     }));
+    setMaximizedWindows({ terminal: false, brave: false, discord: false, postman: false });
 
-    // wait same duration as individual closeWindow before hiding windows
     setTimeout(() => {
       setShow({ terminal: false, brave: false, discord: false, postman: false });
       setClosing({ terminal: false, brave: false, discord: false, postman: false });
       setWindowOrder([]);
       window.triggerDesktopExit?.();
-    }, 220);
+    }, 460);
   };
 
   useEffect(() => {
     const handleDesktopExit = () => {
       setShow({ terminal: false, brave: false, discord: false, postman: false });
       setClosing({ terminal: false, brave: false, discord: false, postman: false });
+      setMaximizedWindows({ terminal: false, brave: false, discord: false, postman: false });
       setWindowOrder([]);
     };
 
@@ -95,9 +105,12 @@ const Workstation = () => {
         className='window'
         onPointerDown={() => focusWindow(windowName)}
         style={{
-          transform: closing[windowName] ? 'translate(-50%, -50%) scale(0.9)' : 'translate(-50%, -50%) scale(1)',
+          transform: closing[windowName] ? 'translate(-50%, -50%) scale(0.88)' : 'translate(-50%, -50%) scale(1)',
           zIndex: getWindowZIndex(windowName),
           opacity: closing[windowName] ? 0 : 1,
+          filter: closing[windowName] ? 'blur(6px)' : 'blur(0px)',
+          transition: 'transform 460ms cubic-bezier(0.16, 1, 0.3, 1), opacity 380ms cubic-bezier(0.16, 1, 0.3, 1), filter 380ms cubic-bezier(0.16, 1, 0.3, 1)',
+          pointerEvents: closing[windowName] ? 'none' : 'auto',
         }}
       >
         {content}
@@ -117,6 +130,7 @@ const Workstation = () => {
         isBraveOpen={show.brave}
         isDiscordOpen={show.discord}
         isPostmanOpen={show.postman}
+        isMaximized={isAnyMaximized}
       />
 
       {renderWindow(
@@ -127,11 +141,26 @@ const Workstation = () => {
           onOpenDiscord={() => openWindow('discord')}
           onOpenPostman={() => openWindow('postman')}
           onClose={() => closeWindow('terminal')}
+          onMaximizeChange={(max) => setMaximizedWindows((prev) => ({ ...prev, terminal: max }))}
         />,
       )}
-      {renderWindow('brave', show.brave, <BraveResumeBrowser onClose={() => closeWindow('brave')} />)}
+      {renderWindow(
+        'brave',
+        show.brave,
+        <BraveResumeBrowser
+          onClose={() => closeWindow('brave')}
+          onMaximizeChange={(max) => setMaximizedWindows((prev) => ({ ...prev, brave: max }))}
+        />,
+      )}
       {renderWindow('discord', show.discord, <Discord onClose={() => closeWindow('discord')} />)}
-      {renderWindow('postman', show.postman, <Postman onClose={() => closeWindow('postman')} />)}
+      {renderWindow(
+        'postman',
+        show.postman,
+        <Postman
+          onClose={() => closeWindow('postman')}
+          onMaximizeChange={(max) => setMaximizedWindows((prev) => ({ ...prev, postman: max }))}
+        />,
+      )}
     </div>
   );
 };

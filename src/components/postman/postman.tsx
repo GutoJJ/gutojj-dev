@@ -233,15 +233,18 @@ function ApiCollectionsExplorer({ collections = DEFAULT_COLLECTIONS, onOpenVSCod
 
 interface PostmanProps {
     onClose?: () => void;
+    onMaximizeChange?: (isMaximized: boolean) => void;
 }
 
-function Postman({ onClose }: PostmanProps) {
+function Postman({ onClose, onMaximizeChange }: PostmanProps) {
     return (
         <GnomeWindow
-            title="Postman"
+            title="API Collections"
             width={800}
             onClose={onClose}
             showExtraControls={false}
+            allowFullscreen={true}
+            onMaximizeChange={onMaximizeChange}
         >   
             <ApiCollectionsExplorer  />
         </GnomeWindow>
