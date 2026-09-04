@@ -5,8 +5,9 @@ import Terminal from './terminal/terminal.tsx';
 import BraveResumeBrowser from './brave/brave.tsx';
 import Discord from './discord/discord.tsx';
 import Postman from './postman/postman.tsx';
+import Cortex from './cortex/cortex.tsx';
 
-type WindowName = 'terminal' | 'brave' | 'discord' | 'postman';
+type WindowName = 'terminal' | 'brave' | 'discord' | 'postman' | 'cortex';
 type WindowState = Record<WindowName, boolean>;
 
 const WINDOW_BASE_Z = 10;
@@ -17,6 +18,7 @@ const Workstation = () => {
     brave: false,
     discord: false,
     postman: false,
+    cortex: false,
   });
 
   const [closing, setClosing] = useState<WindowState>({
@@ -24,6 +26,7 @@ const Workstation = () => {
     brave: false,
     discord: false,
     postman: false,
+    cortex: false,
   });
 
   const [windowOrder, setWindowOrder] = useState<WindowName[]>([]);
@@ -33,6 +36,7 @@ const Workstation = () => {
     brave: false,
     discord: false,
     postman: false,
+    cortex: false,
   });
 
   const isAnyMaximized = Object.values(maximizedWindows).some(Boolean);
@@ -73,12 +77,13 @@ const Workstation = () => {
       brave: show.brave ? true : prev.brave,
       discord: show.discord ? true : prev.discord,
       postman: show.postman ? true : prev.postman,
+      cortex: show.cortex ? true : prev.cortex,
     }));
-    setMaximizedWindows({ terminal: false, brave: false, discord: false, postman: false });
+    setMaximizedWindows({ terminal: false, brave: false, discord: false, postman: false, cortex: false });
 
     setTimeout(() => {
-      setShow({ terminal: false, brave: false, discord: false, postman: false });
-      setClosing({ terminal: false, brave: false, discord: false, postman: false });
+      setShow({ terminal: false, brave: false, discord: false, postman: false, cortex: false });
+      setClosing({ terminal: false, brave: false, discord: false, postman: false, cortex: false });
       setWindowOrder([]);
       window.triggerDesktopExit?.();
     }, 460);
@@ -86,9 +91,9 @@ const Workstation = () => {
 
   useEffect(() => {
     const handleDesktopExit = () => {
-      setShow({ terminal: false, brave: false, discord: false, postman: false });
-      setClosing({ terminal: false, brave: false, discord: false, postman: false });
-      setMaximizedWindows({ terminal: false, brave: false, discord: false, postman: false });
+      setShow({ terminal: false, brave: false, discord: false, postman: false, cortex: false });
+      setClosing({ terminal: false, brave: false, discord: false, postman: false, cortex: false });
+      setMaximizedWindows({ terminal: false, brave: false, discord: false, postman: false, cortex: false });
       setWindowOrder([]);
     };
 
@@ -126,10 +131,12 @@ const Workstation = () => {
         onOpenBrave={() => openWindow('brave')}
         onOpenDiscord={() => openWindow('discord')}
         onOpenPostman={() => openWindow('postman')}
+        onOpenCortex={() => openWindow('cortex')}
         isTerminalOpen={show.terminal}
         isBraveOpen={show.brave}
         isDiscordOpen={show.discord}
         isPostmanOpen={show.postman}
+        isCortexOpen={show.cortex}
         isMaximized={isAnyMaximized}
       />
 
@@ -140,6 +147,7 @@ const Workstation = () => {
           onOpenBrave={() => openWindow('brave')}
           onOpenDiscord={() => openWindow('discord')}
           onOpenPostman={() => openWindow('postman')}
+          onOpenCortex={() => openWindow('cortex')}
           onClose={() => closeWindow('terminal')}
           onMaximizeChange={(max) => setMaximizedWindows((prev) => ({ ...prev, terminal: max }))}
         />,
@@ -150,6 +158,7 @@ const Workstation = () => {
         <BraveResumeBrowser
           onClose={() => closeWindow('brave')}
           onMaximizeChange={(max) => setMaximizedWindows((prev) => ({ ...prev, brave: max }))}
+          onOpenCortex={() => openWindow('cortex')}
         />,
       )}
       {renderWindow('discord', show.discord, <Discord onClose={() => closeWindow('discord')} />)}
@@ -159,6 +168,14 @@ const Workstation = () => {
         <Postman
           onClose={() => closeWindow('postman')}
           onMaximizeChange={(max) => setMaximizedWindows((prev) => ({ ...prev, postman: max }))}
+        />,
+      )}
+      {renderWindow(
+        'cortex',
+        show.cortex,
+        <Cortex
+          onClose={() => closeWindow('cortex')}
+          onMaximizeChange={(max) => setMaximizedWindows((prev) => ({ ...prev, cortex: max }))}
         />,
       )}
     </div>

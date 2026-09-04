@@ -82,6 +82,10 @@ const INITIAL_FS: DirNode = {
                                     type: 'file',
                                     content: 'Recomendador de filmes em forma de terminal. Digite "goold" para abrir.',
                                 },
+                                'cortex.txt': {
+                                    type: 'file',
+                                    content: 'Cortex — Assistente experimental de chat, leitura e análise de documentos. Digite "cortex" para abrir dentro deste portfolio.',
+                                },
                             },
                         },
                     },
@@ -190,6 +194,7 @@ const HELP_TEXT = [
     '  discord       abre o Discord',
     '  github        abre o GitHub',
     '  linkedin      abre o LinkedIn',
+    '  cortex        abre o Cortex',
     '  goold         abre o site de recomendação de filmes',
     '  banner        mostra o logo em ASCII',
     '  date          data e hora atual',
@@ -241,6 +246,7 @@ function runCommand(
         onOpenBrave?: () => void;
         onOpenDiscord?: () => void;
         onOpenPostman?: () => void;
+        onOpenCortex?: () => void;
         onClose?: () => void;
     },
 ) {
@@ -471,6 +477,8 @@ function runCommand(
         case 'projects':
             helpers.print('FilmesDiego — recomendador de filmes em forma de terminal');
             helpers.print('  → digite "goold" para abrir');
+            helpers.print('Cortex — assistente experimental de chat e automações embutido no desktop');
+            helpers.print('  → digite "cortex" para abrir');
             return;
         case 'contact':
             helpers.print('email:    gutojung12@hotmail.com');
@@ -490,6 +498,10 @@ function runCommand(
         case 'postman':
             helpers.print('Abrindo Postman...');
             helpers.onOpenPostman?.();
+            return;
+        case 'cortex':
+            helpers.print('Abrindo Cortex...');
+            helpers.onOpenCortex?.();
             return;
         case 'github':
             helpers.print('Abrindo github.com/gutojj ...');
@@ -530,12 +542,13 @@ interface NeofetchTerminalProps {
     onOpenBrave?: () => void;
     onOpenDiscord?: () => void;
     onOpenPostman?: () => void;
+    onOpenCortex?: () => void;
     onClose?: () => void;
     allowFullscreen?: boolean;
     onMaximizeChange?: (isMaximized: boolean) => void;
 }
 
-function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onOpenPostman, onOpenDiscord, onClose, allowFullscreen = false, onMaximizeChange }: NeofetchTerminalProps) {
+function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onOpenPostman, onOpenDiscord, onOpenCortex, onClose, allowFullscreen = false, onMaximizeChange }: NeofetchTerminalProps) {
     const [cwd, setCwd] = useState(initialCwd);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [mounted, setMounted] = useState(false);
@@ -637,9 +650,9 @@ function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onO
         if (cmdLine.trim()) historyRef.current = [...historyRef.current, cmdLine];
         setHistoryIndex(null);
 
-        runCommand(cmdLine, cwd, setCwd, { print, clear, history: historyRef.current, onOpenBrave, onOpenDiscord, onOpenPostman, onClose });
+        runCommand(cmdLine, cwd, setCwd, { print, clear, history: historyRef.current, onOpenBrave, onOpenDiscord, onOpenPostman, onOpenCortex, onClose });
         setInput('');
-    }, [input, host, cwd, setCwd, print, clear, onOpenBrave, onOpenDiscord, onOpenPostman, onClose]);
+    }, [input, host, cwd, setCwd, print, clear, onOpenBrave, onOpenDiscord, onOpenPostman, onOpenCortex, onClose]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();

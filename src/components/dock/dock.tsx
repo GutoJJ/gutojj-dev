@@ -8,6 +8,8 @@ import vscodeIcon from '../../assets/dock/vscode.svg';
 import intellijIcon from '../../assets/dock/intellij-idea-ce.svg';
 import nautilusIcon from '../../assets/dock/nautilus_org.gnome.Nautilus.png';
 import terminalIcon from '../../assets/dock/gnome-console_org.gnome.Console.png';
+import antigIcon from '../../assets/dock/antig.jpeg';
+import postmanIcon from '../../assets/dock/postman.svg';
 import trashIcon from '../../assets/dock/user-trash-symbolic.svg';
 import appGrid from '../../assets/dock/view-app-grid-symbolic.svg';
 
@@ -16,10 +18,12 @@ interface DockProps {
   onOpenBrave?: () => void;
   onOpenDiscord?: () => void;
   onOpenPostman?: () => void;
+  onOpenCortex?: () => void;
   isTerminalOpen?: boolean;
   isBraveOpen?: boolean;
   isDiscordOpen?: boolean;
   isPostmanOpen?: boolean;
+  isCortexOpen?: boolean;
   isMaximized?: boolean;
 }
 
@@ -27,9 +31,11 @@ function Dock({
   onOpenTerminal,
   onOpenBrave,
   onOpenDiscord,
+  onOpenCortex,
   isTerminalOpen,
   isBraveOpen,
   isDiscordOpen,
+  isCortexOpen,
   isMaximized = false,
 }: DockProps) {
   const [isHoverRevealed, setIsHoverRevealed] = useState(false);
@@ -157,11 +163,26 @@ function Dock({
           </div>
 
           <img src={spotifyIcon} alt="Spotify" width={appSize} height={appSize} />
+          <img src={postmanIcon} alt="Postman" width={appSize} height={appSize} />
 
 
           {/* Postman temporariamente desabilitado */}
 
           <img src={vscodeIcon} alt="VS Code" width={appSize} height={appSize} />
+          <div className="dock-app">
+            <button
+              type="button"
+              onClick={() => {
+                onOpenCortex?.();
+                if (isMaximized) setIsMobileOpen(false);
+              }}
+              className="dock-button"
+              aria-label="Abrir Cortex"
+            >
+              <img src={antigIcon} alt="Cortex" width={appSize} height={appSize} style={{ borderRadius: '20px' }} />
+            </button>
+            {isCortexOpen && <span className="dock-indicator" />}
+          </div>
           <img src={intellijIcon} alt="IntelliJ IDEA" width={appSize} height={appSize} />
           <img src={nautilusIcon} alt="Nautilus" width={appSize} height={appSize} />
 

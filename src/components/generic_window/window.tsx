@@ -6,6 +6,7 @@ interface GnomeWindowProps {
     title: string;
     subtitle?: string;
     width?: number;
+    height?: number;
     children: React.ReactNode;
     onClose?: () => void;
     showExtraControls?: boolean;
@@ -17,6 +18,7 @@ function Window({
     title,
     subtitle,
     width = 640,
+    height,
     children,
     onClose,
     showExtraControls = true,
@@ -110,6 +112,7 @@ function Window({
             className={`gwin-window ${isMaximized ? 'maximized' : ''}`}
             style={{
                 width: isMaximized ? undefined : width,
+                height: isMaximized ? undefined : height ? `${height}px` : 'auto',
                 transform: isMaximized
                     ? 'translate(0, 0) scale(1)'
                     : `translate(${position.x}px, ${position.y}px) scale(${mounted ? 1 : 0.88})`,

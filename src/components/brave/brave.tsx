@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { Square, X } from 'lucide-react';
 import './brave.css';
 import cvPdf from '../../assets/cv_augusto_jung.pdf';
+import githubIcon from '../../assets/dock/github.svg';
 
 const PROFILE = {
     name: 'Augusto Jung',
@@ -36,6 +37,21 @@ const EXPERIENCES = [
         description:
             'Construção de APIs RESTful de alta escalabilidade em Node.js para o setor de turismo. Desenvolvimento de chat com tradução em tempo real (Google Translate API) e sistema de recomendação inteligente com IA (Gemini API) para roteiros turísticos. Melhorias de performance, refatoração de código e padronização.',
         tags: ['Node.js', 'TypeScript', 'REST API', 'Google Translate API', 'Gemini API', 'SQL'],
+    },
+];
+
+const PROJECTS = [
+    {
+        title: 'Cortex',
+        role: 'Assistente de IA e análise de documentos.',
+        period: '2026',
+        status: 'concluído',
+        description: 'Assistente inteligente integrado ao desktop do portfólio, capaz de conversar, interpretar documentos e analisar seu conteúdo de acordo com as instruções fornecidas.',
+        tags: ['Node.js', 'Express', 'Gemini API'],
+        githubUrl: `https://${CONTACT.github}/genai-chat-api`,
+        githubLabel: 'Ver no GitHub',
+        actionLabel: 'Abrir Cortex',
+        hasAction: true,
     },
 ];
 
@@ -101,9 +117,10 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 interface BraveResumeBrowserProps {
     onClose?: () => void;
     onMaximizeChange?: (isMaximized: boolean) => void;
+    onOpenCortex?: () => void;
 }
 
-function BraveResumeBrowser({ onClose, onMaximizeChange }: BraveResumeBrowserProps) {
+function BraveResumeBrowser({ onClose, onMaximizeChange, onOpenCortex }: BraveResumeBrowserProps) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [mounted, setMounted] = useState(false);
     const [dragging, setDragging] = useState(false);
@@ -299,6 +316,63 @@ function BraveResumeBrowser({ onClose, onMaximizeChange }: BraveResumeBrowserPro
                                                 {exp.tags.map((tag) => (
                                                     <span key={tag} className="tag">{tag}</span>
                                                 ))}
+                                            </div>
+                                        </article>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Projetos */}
+                    <section className="section">
+                        <div className="resume-inner">
+                            <Reveal>
+                                <span className="eyebrow">projetos</span>
+                                <h2 className="section-title">Projetos</h2>
+                            </Reveal>
+
+                            <div className="service-list">
+                                {PROJECTS.map((project, i) => (
+                                    <Reveal key={project.title} delay={i * 90}>
+                                        <article className="service-card">
+                                            <div className="service-card-head">
+                                                <span className={`service-status service-status--${project.status === 'ativo' ? 'active' : 'done'}`}>
+                                                    <span className="service-status-dot" />{project.status}
+                                                </span>
+                                                <span className="service-period">{project.period}</span>
+                                            </div>
+                                            <h3 className="service-name">{project.title}</h3>
+                                            <p className="service-role">{project.role}</p>
+                                            <p className="service-desc">{project.description}</p>
+                                            <div className="tag-row" style={{ marginBottom: 12 }}>
+                                                {project.tags.map((tag) => (
+                                                    <span key={tag} className="tag">{tag}</span>
+                                                ))}
+                                            </div>
+
+                                            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                                                <a
+                                                    className="hero-link"
+                                                    href={project.githubUrl}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
+                                                >
+                                                    <img src={githubIcon} alt="GitHub" width={18} height={18} style={{ filter: 'invert(1)' }} />
+                                                    <span>{project.githubLabel}</span>
+                                                </a>
+
+                                                {project.hasAction && (
+                                                    <button
+                                                        type="button"
+                                                        className="hero-link hero-link--primary"
+                                                        style={{ cursor: 'pointer' }}
+                                                        onClick={() => onOpenCortex?.()}
+                                                    >
+                                                        {project.actionLabel}
+                                                    </button>
+                                                )}
                                             </div>
                                         </article>
                                     </Reveal>
