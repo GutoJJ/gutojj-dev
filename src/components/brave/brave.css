@@ -658,8 +658,7 @@
 
 @media (max-width: 640px) {
     .brave-window:not(.maximized) {
-        max-height: 73vh;
-        height: auto;
+        height: 73vh;
     }
 
     .brave-viewport {

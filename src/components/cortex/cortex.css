@@ -211,12 +211,17 @@
 
 @media (max-width: 640px) {
     .chat-app {
-        min-height: 420px;
+        min-height: 0;
+        height: 100%;
     }
 
     .chat-empty {
         gap: 18px;
         padding: 12px;
+    }
+
+    .chat-messages {
+        min-height: 0;
     }
 
     .chat-empty h2 {

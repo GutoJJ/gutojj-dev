@@ -253,6 +253,10 @@
     }
   }
 
+  .dock-line {
+    display: none;
+  }
+
   .dock-mobile {
     display: flex;
 

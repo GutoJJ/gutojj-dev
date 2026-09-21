@@ -1,11 +1,19 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { SquarePlus, LayoutGrid, Menu, X } from 'lucide-react';
 import './terminal.css';
+import {
+    USER,
+    fileSystem,
+    saveFileSystem,
+    normalizePath,
+    getNodeAtPath,
+    pathToString,
+    notifyFsChange,
+} from '../../fileSystemStore';
 
 // ---------------------------------------------------------------------------
 // Dados usados pelo neofetch / comandos de info
 // ---------------------------------------------------------------------------
-const USER = 'gutojj';
 const HOST = 'fedora';
 
 const NEOFETCH_INFO: Array<[string, string]> = [
@@ -39,138 +47,6 @@ const ASCII_LOGO = [
     'ㅤㅤ╚═════╝',
 ];
 
-// ---------------------------------------------------------------------------
-// Sistema de arquivos em memória persistido via localStorage
-// ---------------------------------------------------------------------------
-interface FileNode {
-    type: 'file';
-    content: string;
-}
-
-interface DirNode {
-    type: 'dir';
-    children: Record<string, FileNode | DirNode>;
-}
-
-const STORAGE_KEY = 'gutojj_terminal_fs_v1';
-
-const INITIAL_FS: DirNode = {
-    type: 'dir',
-    children: {
-        'home': {
-            type: 'dir',
-            children: {
-                [USER]: {
-                    type: 'dir',
-                    children: {
-                        'sobre.txt': {
-                            type: 'file',
-                            content: 'Desenvolvedor Back-end especializado no ecossistema Node.js, TypeScript e AWS (ECS, EC2, RDS, S3). Foco em APIs RESTful de alta performance, microsserviços e integração entre sistemas corporativos.',
-                        },
-                        'curriculo.pdf': {
-                            type: 'file',
-                            content: '[binário] use o comando "cv" ou "brave" para abrir o currículo.',
-                        },
-                        'contato.txt': {
-                            type: 'file',
-                            content: 'gutojung12@hotmail.com · (51) 99275-3047 · github.com/gutojj · linkedin.com/in/gutojj',
-                        },
-                        'projetos': {
-                            type: 'dir',
-                            children: {
-                                'filmes-diego.txt': {
-                                    type: 'file',
-                                    content: 'Recomendador de filmes em forma de terminal. Digite "goold" para abrir.',
-                                },
-                                'cortex.txt': {
-                                    type: 'file',
-                                    content: 'Cortex — Assistente experimental de chat, leitura e análise de documentos. Digite "cortex" para abrir dentro deste portfolio.',
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-        },
-    },
-};
-
-function loadFileSystem(): DirNode {
-    if (typeof window === 'undefined') return INITIAL_FS;
-    try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            return JSON.parse(saved);
-        }
-    } catch {
-        // Fallback para INITIAL_FS em caso de erro no parse
-    }
-    return INITIAL_FS;
-}
-
-function saveFileSystem(fs: DirNode) {
-    if (typeof window === 'undefined') return;
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(fs));
-    } catch {
-        // ignore storage quota errors
-    }
-}
-
-let fileSystem: DirNode = loadFileSystem();
-
-// Resolve caminho (absoluto ou relativo ao home / diretório atual)
-function parseAbsolutePath(pathStr: string): string[] {
-    if (pathStr === '~') return ['home', USER];
-    if (pathStr.startsWith('~/')) return ['home', USER, ...pathStr.slice(2).split('/').filter(Boolean)];
-    return pathStr.split('/').filter(Boolean);
-}
-
-function normalizePath(cwd: string, targetPath: string): string[] {
-    let raw = targetPath.trim();
-    if (!raw || raw === '.') return parseAbsolutePath(cwd);
-
-    let absoluteStr = '';
-    if (raw.startsWith('~')) {
-        absoluteStr = `/home/${USER}` + raw.slice(1);
-    } else if (raw.startsWith('/')) {
-        absoluteStr = raw;
-    } else {
-        const cwdAbsoluteStr = cwd === '~' ? `/home/${USER}` : cwd.startsWith('~/') ? `/home/${USER}` + cwd.slice(1) : cwd;
-        absoluteStr = cwdAbsoluteStr + '/' + raw;
-    }
-
-    const parts = absoluteStr.split('/').filter(Boolean);
-    const stack: string[] = [];
-    for (const part of parts) {
-        if (part === '.') continue;
-        if (part === '..') {
-            if (stack.length > 0) stack.pop();
-        } else {
-            stack.push(part);
-        }
-    }
-    return stack;
-}
-
-function getNodeAtPath(pathParts: string[]): DirNode | FileNode | null {
-    let current: DirNode | FileNode = fileSystem;
-    for (const part of pathParts) {
-        if (current.type !== 'dir') return null;
-        if (!current.children[part]) return null;
-        current = current.children[part];
-    }
-    return current;
-}
-
-function pathToString(parts: string[]): string {
-    const full = '/' + parts.join('/');
-    const homePrefix = `/home/${USER}`;
-    if (full === homePrefix) return '~';
-    if (full.startsWith(homePrefix + '/')) return '~' + full.slice(homePrefix.length);
-    return full;
-}
-
 const HELP_TEXT = [
     'Comandos disponíveis:',
     '  neofetch      mostra as specs do sistema',
@@ -188,6 +64,8 @@ const HELP_TEXT = [
     '  touch <file>  cria um arquivo vazio ou atualiza data',
     '  rm <file>     remove um arquivo ou pasta (-r / -rf)',
     '  cat <arquivo> mostra o conteúdo de um arquivo',
+    '  gedit <file>  abre um arquivo no editor de texto',
+    '  nano <file>   abre um arquivo no editor de texto',
     '  uname -a      informações do "sistema"',
     '  history       histórico de comandos',
     '  cv / brave    abre o navegador de currículo',
@@ -195,6 +73,7 @@ const HELP_TEXT = [
     '  github        abre o GitHub',
     '  linkedin      abre o LinkedIn',
     '  cortex        abre o Cortex',
+    '  nautilus      abre o gerenciador de arquivos',
     '  goold         abre o site de recomendação de filmes',
     '  banner        mostra o logo em ASCII',
     '  date          data e hora atual',
@@ -247,6 +126,8 @@ function runCommand(
         onOpenDiscord?: () => void;
         onOpenPostman?: () => void;
         onOpenCortex?: () => void;
+        onOpenNautilus?: () => void;
+        onOpenTextEditor?: (filePath: string[], fileName: string, content: string) => void;
         onClose?: () => void;
     },
 ) {
@@ -343,6 +224,45 @@ function runCommand(
             helpers.print(node.content);
             return;
         }
+        case 'gedit':
+        case 'nano': {
+            if (!arg) {
+                helpers.print(`uso: ${cmd} <arquivo>`, 'error');
+                return;
+            }
+            const targetParts = normalizePath(cwd, arg);
+            const node = getNodeAtPath(targetParts);
+            
+            if (node && node.type === 'dir') {
+                helpers.print(`${cmd}: ${arg}: É um diretório`, 'error');
+                return;
+            }
+            
+            // Se o arquivo não existe, cria um novo vazio
+            if (!node) {
+                const parentParts = targetParts.slice(0, -1);
+                const fileName = targetParts[targetParts.length - 1];
+                const parentNode = getNodeAtPath(parentParts);
+                
+                if (!parentNode || parentNode.type !== 'dir') {
+                    helpers.print(`${cmd}: impossível abrir '${arg}': Diretório pai não encontrado`, 'error');
+                    return;
+                }
+                
+                // Cria o arquivo no sistema
+                parentNode.children[fileName] = { type: 'file', content: '' };
+                saveFileSystem();
+                notifyFsChange();
+            }
+            
+            // Abre o editor
+            const fileNode = getNodeAtPath(targetParts);
+            if (fileNode && fileNode.type === 'file') {
+                helpers.print(`Abrindo '${arg}' no editor de texto...`);
+                helpers.onOpenTextEditor?.(targetParts, targetParts[targetParts.length - 1], fileNode.content);
+            }
+            return;
+        }
         case 'mkdir': {
             if (!arg) {
                 helpers.print('uso: mkdir <diretório>', 'error');
@@ -351,20 +271,18 @@ function runCommand(
             const targetParts = normalizePath(cwd, arg);
             const parentParts = targetParts.slice(0, -1);
             const dirName = targetParts[targetParts.length - 1];
-
             const parentNode = getNodeAtPath(parentParts);
             if (!parentNode || parentNode.type !== 'dir') {
                 helpers.print(`mkdir: impossível criar o diretório '${arg}': Diretório pai não encontrado`, 'error');
                 return;
             }
-
             if (parentNode.children[dirName]) {
                 helpers.print(`mkdir: impossível criar o diretório '${arg}': Arquivo ou diretório já existe`, 'error');
                 return;
             }
-
             parentNode.children[dirName] = { type: 'dir', children: {} };
-            saveFileSystem(fileSystem);
+            saveFileSystem();
+            notifyFsChange();
             helpers.print(`Diretório '${arg}' criado com sucesso.`);
             return;
         }
@@ -376,10 +294,8 @@ function runCommand(
             const targetParts = normalizePath(cwd, arg);
             const parentParts = targetParts.slice(0, -1);
             const dirName = targetParts[targetParts.length - 1];
-
             const parentNode = getNodeAtPath(parentParts);
             const node = getNodeAtPath(targetParts);
-
             if (!node || !parentNode || parentNode.type !== 'dir') {
                 helpers.print(`rmdir: falha ao remover '${arg}': Arquivo ou diretório não encontrado`, 'error');
                 return;
@@ -392,9 +308,9 @@ function runCommand(
                 helpers.print(`rmdir: falha ao remover '${arg}': Diretório não vazio (use rm -r)`, 'error');
                 return;
             }
-
             delete parentNode.children[dirName];
-            saveFileSystem(fileSystem);
+            saveFileSystem();
+            notifyFsChange();
             helpers.print(`Diretório '${arg}' removido.`);
             return;
         }
@@ -406,16 +322,15 @@ function runCommand(
             const targetParts = normalizePath(cwd, arg);
             const parentParts = targetParts.slice(0, -1);
             const fileName = targetParts[targetParts.length - 1];
-
             const parentNode = getNodeAtPath(parentParts);
             if (!parentNode || parentNode.type !== 'dir') {
                 helpers.print(`touch: impossível tocar '${arg}': Diretório pai não encontrado`, 'error');
                 return;
             }
-
             if (!parentNode.children[fileName]) {
                 parentNode.children[fileName] = { type: 'file', content: '' };
-                saveFileSystem(fileSystem);
+                saveFileSystem();
+                notifyFsChange();
                 helpers.print(`Arquivo '${arg}' criado.`);
             } else {
                 helpers.print(`Data de modificação de '${arg}' atualizada.`);
@@ -429,31 +344,26 @@ function runCommand(
             }
             const isRecursive = rest.includes('-r') || rest.includes('-rf') || rest.includes('-fr');
             const pathArg = rest.filter((r) => !r.startsWith('-')).join(' ');
-
             if (!pathArg) {
                 helpers.print('uso: rm [-r|-rf] <arquivo/diretório>', 'error');
                 return;
             }
-
             const targetParts = normalizePath(cwd, pathArg);
             const parentParts = targetParts.slice(0, -1);
             const name = targetParts[targetParts.length - 1];
-
             const parentNode = getNodeAtPath(parentParts);
             const node = getNodeAtPath(targetParts);
-
             if (!node || !parentNode || parentNode.type !== 'dir') {
                 helpers.print(`rm: não foi possível remover '${pathArg}': Arquivo ou diretório não encontrado`, 'error');
                 return;
             }
-
             if (node.type === 'dir' && !isRecursive) {
                 helpers.print(`rm: não foi possível remover '${pathArg}': É um diretório (use -r)`, 'error');
                 return;
             }
-
             delete parentNode.children[name];
-            saveFileSystem(fileSystem);
+            saveFileSystem();
+            notifyFsChange();
             helpers.print(`'${pathArg}' removido com sucesso.`);
             return;
         }
@@ -503,6 +413,11 @@ function runCommand(
             helpers.print('Abrindo Cortex...');
             helpers.onOpenCortex?.();
             return;
+        case 'nautilus':
+        case 'files':
+            helpers.print('Abrindo Arquivos...');
+            helpers.onOpenNautilus?.();
+            return;
         case 'github':
             helpers.print('Abrindo github.com/gutojj ...');
             openLink('https://github.com/gutojj');
@@ -536,19 +451,32 @@ function runCommand(
 }
 
 interface NeofetchTerminalProps {
-    user?: string;
     host?: string;
     cwd?: string;
     onOpenBrave?: () => void;
     onOpenDiscord?: () => void;
     onOpenPostman?: () => void;
     onOpenCortex?: () => void;
+    onOpenNautilus?: () => void;
+    onOpenTextEditor?: (filePath: string[], fileName: string, content: string) => void;
     onClose?: () => void;
     allowFullscreen?: boolean;
     onMaximizeChange?: (isMaximized: boolean) => void;
 }
 
-function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onOpenPostman, onOpenDiscord, onOpenCortex, onClose, allowFullscreen = false, onMaximizeChange }: NeofetchTerminalProps) {
+function NeofetchTerminal({
+    host = HOST,
+    cwd: initialCwd = '~',
+    onOpenBrave,
+    onOpenPostman,
+    onOpenDiscord,
+    onOpenCortex,
+    onOpenNautilus,
+    onOpenTextEditor,
+    onClose,
+    allowFullscreen = false,
+    onMaximizeChange,
+}: NeofetchTerminalProps) {
     const [cwd, setCwd] = useState(initialCwd);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [mounted, setMounted] = useState(false);
@@ -581,13 +509,8 @@ function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onO
     }, [lines]);
 
     const onMaximizeChangeRef = useRef(onMaximizeChange);
-    useEffect(() => {
-        onMaximizeChangeRef.current = onMaximizeChange;
-    });
-
-    useEffect(() => {
-        onMaximizeChangeRef.current?.(isMaximized);
-    }, [isMaximized]);
+    useEffect(() => { onMaximizeChangeRef.current = onMaximizeChange; });
+    useEffect(() => { onMaximizeChangeRef.current?.(isMaximized); }, [isMaximized]);
 
     const handleDoubleClick = useCallback((e: React.MouseEvent) => {
         if (!allowFullscreen || (e.target as HTMLElement).closest('.nfterm-btn')) return;
@@ -603,39 +526,25 @@ function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onO
 
     const handlePointerMove = useCallback((e: React.PointerEvent) => {
         if (!dragState.current || isMaximized) return;
-
         const rect = windowRef.current?.getBoundingClientRect();
         const currentTop = rect ? rect.top : 33;
         const minY = position.y + (33 - currentTop);
-
         const maxY = window.innerHeight / 2 - 40;
         const maxX = window.innerWidth / 2 - 40;
         const minX = -(window.innerWidth / 2 - 40);
-
         const newX = dragState.current.originX + (e.clientX - dragState.current.startX);
         const newY = dragState.current.originY + (e.clientY - dragState.current.startY);
-
-        setPosition({
-            x: Math.min(maxX, Math.max(minX, newX)),
-            y: Math.max(minY, Math.min(maxY, newY)),
-        });
+        setPosition({ x: Math.min(maxX, Math.max(minX, newX)), y: Math.max(minY, Math.min(maxY, newY)) });
     }, [isMaximized, position]);
 
     const handlePointerUp = useCallback((e: React.PointerEvent) => {
         dragState.current = null;
         setDragging(false);
-        if ((e.target as HTMLElement).releasePointerCapture) {
-            try {
-                (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-            } catch {
-                // ignore
-            }
-        }
+        try { (e.target as HTMLElement).releasePointerCapture(e.pointerId); } catch { /* ignore */ }
     }, []);
 
     const executeCurrentInput = useCallback(() => {
         const cmdLine = input;
-
         print(
             <span>
                 <span className="nfterm-prompt">{USER}@{host}</span>
@@ -646,25 +555,19 @@ function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onO
             </span>,
             'input',
         );
-
         if (cmdLine.trim()) historyRef.current = [...historyRef.current, cmdLine];
         setHistoryIndex(null);
-
-        runCommand(cmdLine, cwd, setCwd, { print, clear, history: historyRef.current, onOpenBrave, onOpenDiscord, onOpenPostman, onOpenCortex, onClose });
+        runCommand(cmdLine, cwd, setCwd, {
+            print, clear, history: historyRef.current,
+            onOpenBrave, onOpenDiscord, onOpenPostman, onOpenCortex, onOpenNautilus, onOpenTextEditor, onClose,
+        });
         setInput('');
-    }, [input, host, cwd, setCwd, print, clear, onOpenBrave, onOpenDiscord, onOpenPostman, onOpenCortex, onClose]);
+    }, [input, host, cwd, setCwd, print, clear, onOpenBrave, onOpenDiscord, onOpenPostman, onOpenCortex, onOpenNautilus, onClose]);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        executeCurrentInput();
-    };
+    const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); executeCurrentInput(); };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            executeCurrentInput();
-            return;
-        }
+        if (e.key === 'Enter') { e.preventDefault(); executeCurrentInput(); return; }
         if (e.key === 'ArrowUp') {
             e.preventDefault();
             const hist = historyRef.current;
@@ -677,22 +580,19 @@ function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onO
             const hist = historyRef.current;
             if (historyIndex === null) return;
             const idx = historyIndex + 1;
-            if (idx >= hist.length) {
-                setHistoryIndex(null);
-                setInput('');
-            } else {
-                setHistoryIndex(idx);
-                setInput(hist[idx]);
-            }
+            if (idx >= hist.length) { setHistoryIndex(null); setInput(''); }
+            else { setHistoryIndex(idx); setInput(hist[idx]); }
         }
     };
+
+    // keep fileSystem ref so the FS module var is always the shared one
+    void fileSystem;
 
     return (
         <div
             ref={windowRef}
             className={`nfterm-window ${isMaximized ? 'maximized' : ''}`}
             style={{
-                width: isMaximized ? undefined : undefined,
                 transform: isMaximized
                     ? 'none'
                     : `translate(${position.x}px, ${position.y}px) scale(${mounted ? 1 : 0.88})`,
@@ -700,7 +600,7 @@ function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onO
                 filter: mounted ? 'blur(0px)' : 'blur(10px)',
                 transition: dragging
                     ? 'none'
-                    : 'transform 460ms cubic-bezier(0.16, 1, 0.3, 1), width 460ms cubic-bezier(0.16, 1, 0.3, 1), height 460ms cubic-bezier(0.16, 1, 0.3, 1), top 460ms cubic-bezier(0.16, 1, 0.3, 1), left 460ms cubic-bezier(0.16, 1, 0.3, 1), border-radius 460ms cubic-bezier(0.16, 1, 0.3, 1), opacity 380ms cubic-bezier(0.16, 1, 0.3, 1), filter 380ms cubic-bezier(0.16, 1, 0.3, 1)',
+                    : 'transform 460ms cubic-bezier(0.16, 1, 0.3, 1), width 460ms cubic-bezier(0.16, 1, 0.3, 1), height 460ms cubic-bezier(0.16, 1, 0.3, 1), border-radius 460ms cubic-bezier(0.16, 1, 0.3, 1), opacity 380ms cubic-bezier(0.16, 1, 0.3, 1), filter 380ms cubic-bezier(0.16, 1, 0.3, 1)',
             }}
             onClick={() => inputRef.current?.focus()}
         >
@@ -716,12 +616,10 @@ function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onO
                         <SquarePlus size={15} strokeWidth={2.4} />
                     </button>
                 </div>
-
                 <div className="nfterm-titlebar-center">
                     <span className="nfterm-title">{USER}@{host}:{cwd}</span>
                     <span className="nfterm-subtitle">{cwd}</span>
                 </div>
-
                 <div className="nfterm-titlebar-right">
                     <button type="button" className="nfterm-btn nfterm-btn-icon" aria-label="Visão geral">
                         <LayoutGrid size={15} strokeWidth={2.4} />
@@ -741,7 +639,6 @@ function NeofetchTerminal({ host = HOST, cwd: initialCwd = '~', onOpenBrave, onO
                         {line.content}
                     </div>
                 ))}
-
                 <form onSubmit={handleSubmit} className="nfterm-inputrow">
                     <span className="nfterm-prompt">{USER}@{host}</span>
                     <span className="nfterm-colon">:</span>

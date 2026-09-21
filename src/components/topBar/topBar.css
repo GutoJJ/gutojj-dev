@@ -12,8 +12,8 @@
     height: 33px;
 
     box-sizing: border-box;
-    background-color: rgba(16, 20, 26, 0.55);
-    backdrop-filter: blur(28px) saturate(180%);
+    /* background-color: rgba(16, 20, 26, 0.55); */
+    backdrop-filter: blur(28px);
     /* -webkit-backdrop-filter: blur(28px) saturate(180%); */
     color: #f5f5f5;
     font-size: 12px;

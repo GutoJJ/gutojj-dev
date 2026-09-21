@@ -11,14 +11,14 @@ declare global {
 }
 
 const backgroundConfig: NeatConfig = {
-  colors: [
-    { color: '#1A1C30', enabled: true },
-    { color: '#2A3A45', enabled: true },
-    { color: '#46675B', enabled: true },
-    { color: '#002027', enabled: true },
-    { color: '#242438', enabled: true },
-    { color: '#1e9a54', enabled: false },
-  ],
+colors: [
+  { color: '#0F172A', enabled: true },
+  { color: '#1E293B', enabled: true },
+  { color: '#334155', enabled: true },
+  { color: '#1E293B', enabled: true },
+  { color: '#0F172A', enabled: true },
+  { color: '#475569', enabled: false },
+],
   speed: 1.5,
   horizontalPressure: 3,
   verticalPressure: 5,
@@ -120,7 +120,7 @@ function GlobalGradient() {
       document.body.classList.add('wst-bg');
       return;
     }
-    
+
     document.body.classList.remove('wst-bg');
 
     gradientRef.current = new NeatGradient({

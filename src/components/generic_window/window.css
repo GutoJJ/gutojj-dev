@@ -138,11 +138,32 @@
 
 .window {
     position: absolute;
+    left: 50%;
+    top: calc(50% + 16.5px) !important;
+    width: fit-content;
+    height: 0px;
     display: flex;
     justify-content: center;
     align-items: center;
-    left: 50%;
-    height: 0px;
-    top: calc(50% + 16.5px);
     pointer-events: auto;
+    transform: translate(-50%, -50%);
+}
+
+@media (max-width: 640px) {
+    .window {
+        top: calc(50% + 12px);
+    }
+
+    .gwin-window {
+        max-width: calc(100vw - 12px) !important;
+    }
+
+    .gwin-titlebar-side {
+        width: auto;
+        min-width: 0;
+    }
+
+    .gwin-titlebar-center {
+        max-width: 42%;
+    }
 }

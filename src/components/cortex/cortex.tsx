@@ -805,11 +805,13 @@ interface CortexProps {
 }
 
 export default function Cortex({ onClose, onMaximizeChange }: CortexProps) {
+    const isSmallViewport = typeof window !== "undefined" && window.innerWidth <= 640;
+
     return (
         <GnomeWindow
             title="Cortex"
-            width={920}
-            height={720}
+            width={isSmallViewport ? Math.min(920, window.innerWidth - 12) : 920}
+            height={isSmallViewport ? Math.min(720, window.innerHeight - 110) : 720}
             onClose={onClose}
             onMaximizeChange={onMaximizeChange}
             showExtraControls={false}

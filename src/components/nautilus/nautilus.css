@@ -1,0 +1,436 @@
+/* ═══════════════════════════════════════════════
+   NAUTILUS – custom GNOME 50 window
+   ═══════════════════════════════════════════════ */
+
+.naut-win {
+    position: relative;
+    width: 860px;
+    height: 540px;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 60px);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: #1c1c1f;
+    color: #e8e8e8;
+    font-family: -apple-system, "Cantarell", "Inter", sans-serif;
+    font-size: 13px;
+    box-shadow:
+        0 32px 72px rgba(0, 0, 0, 0.65),
+        0 2px 0 rgba(255, 255, 255, 0.05) inset,
+        0 0 0 1px rgba(255, 255, 255, 0.08);
+    will-change: transform, opacity, filter, border-radius;
+    user-select: none;
+}
+
+.naut-win--max {
+    width: 100vw !important;
+    height: calc(100vh - 33px) !important;
+    max-width: 100vw !important;
+    max-height: calc(100vh - 33px) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Titlebar ─────────────────────────────────────────────── */
+.naut-titlebar {
+    display: flex;
+    align-items: center;
+    height: 46px;
+    padding: 0 8px;
+    background: #222226;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    cursor: grab;
+    flex-shrink: 0;
+    gap: 4px;
+}
+.naut-titlebar:active { cursor: grabbing; }
+
+.naut-titlebar-side {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+.naut-titlebar-side--right { margin-left: auto; gap: 3px; }
+
+.naut-titlebar-center {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.naut-titlebar-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(255,255,255,0.12);
+    margin: 0 3px;
+    flex-shrink: 0;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.naut-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.72);
+    cursor: pointer;
+    border-radius: 7px;
+    transition: background 140ms ease, color 140ms ease;
+    flex-shrink: 0;
+}
+.naut-btn--icon { width: 30px; height: 30px; }
+.naut-btn--sm   { width: 22px; height: 22px; border-radius: 5px; }
+.naut-btn:hover { background: rgba(255,255,255,0.09); color: #fff; }
+.naut-btn:disabled { opacity: 0.28; cursor: default; pointer-events: none; }
+.naut-btn.active { background: rgba(255,255,255,0.13); color: #fff; }
+
+.naut-btn--close {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.11);
+    color: rgba(255,255,255,0.85);
+    margin-left: 2px;
+}
+.naut-btn--close:hover { background: rgba(255,255,255,0.22); color: #fff; }
+
+/* ── Breadcrumb ───────────────────────────────────────────── */
+.naut-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    overflow: hidden;
+    max-width: 100%;
+}
+.naut-breadcrumb-seg {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    min-width: 0;
+    flex-shrink: 1;
+}
+.naut-breadcrumb-sep { color: rgba(255,255,255,0.25); flex-shrink: 0; }
+.naut-breadcrumb-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 3px 6px;
+    border-radius: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 110px;
+    transition: background 130ms ease, color 130ms ease;
+}
+.naut-breadcrumb-btn:hover { background: rgba(255,255,255,0.08); color: #e8e8e8; }
+.naut-breadcrumb-btn.active { color: #fff; font-weight: 600; pointer-events: none; }
+
+/* ── Search ───────────────────────────────────────────────── */
+.naut-search {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.11);
+    border-radius: 8px;
+    padding: 4px 8px;
+    width: 100%;
+    max-width: 340px;
+    transition: background 160ms, border-color 160ms;
+}
+.naut-search:focus-within {
+    background: rgba(255,255,255,0.10);
+    border-color: rgba(255,255,255,0.20);
+}
+.naut-search-icon { color: rgba(255,255,255,0.38); flex-shrink: 0; }
+.naut-search-input {
+    flex: 1; min-width: 0;
+    background: transparent; border: none; outline: none;
+    color: #e8e8e8; font-size: 13px; font-family: inherit;
+}
+.naut-search-input::placeholder { color: rgba(255,255,255,0.28); }
+
+/* ── Body ─────────────────────────────────────────────────── */
+.naut-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────── */
+.naut-sidebar {
+    width: 178px;
+    flex-shrink: 0;
+    background: #222226;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: width 260ms cubic-bezier(0.16,1,0.3,1);
+}
+.naut-sidebar--closed { width: 0; border-right: none; overflow: hidden; }
+.naut-sidebar-nav { padding: 8px 0 12px; }
+.naut-sidebar-group { margin-bottom: 6px; }
+
+.naut-sidebar-heading {
+    display: block;
+    padding: 6px 14px 3px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.28);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+}
+
+.naut-sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: calc(100% - 8px);
+    margin: 1px 4px;
+    padding: 6px 10px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.68);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 7px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 130ms ease, color 130ms ease;
+}
+.naut-sidebar-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+.naut-sidebar-item.active { background: rgba(255,255,255,0.12); color: #fff; font-weight: 500; }
+.naut-sidebar-item-icon { display: flex; align-items: center; flex-shrink: 0; opacity: 0.72; }
+.naut-sidebar-item.active .naut-sidebar-item-icon { opacity: 1; }
+
+.naut-sidebar::-webkit-scrollbar { width: 4px; }
+.naut-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 2px; }
+
+/* ── Content ──────────────────────────────────────────────── */
+.naut-content {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+}
+.naut-content--grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 2px;
+}
+.naut-content--list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.naut-content::-webkit-scrollbar { width: 5px; }
+.naut-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 3px; }
+.naut-content::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+
+.naut-empty {
+    width: 100%;
+    padding: 52px 0;
+    text-align: center;
+    color: rgba(255,255,255,0.25);
+    font-size: 13px;
+}
+
+/* ── Entries ──────────────────────────────────────────────── */
+.naut-entry {
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    cursor: default;
+    transition: background 110ms ease;
+    min-width: 0;
+}
+.naut-entry:hover { background: rgba(255,255,255,0.06); }
+.naut-entry--sel { background: rgba(74,144,226,0.25) !important; }
+.naut-entry--sel:hover { background: rgba(74,144,226,0.33) !important; }
+
+/* Grid mode */
+.naut-entry--grid {
+    flex-direction: column;
+    gap: 6px;
+    width: 96px;
+    padding: 10px 6px 8px;
+    justify-content: flex-start;
+}
+
+/* List mode */
+.naut-entry--list {
+    flex-direction: row;
+    gap: 10px;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.naut-entry-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.naut-entry-name {
+    font-size: 12px;
+    color: #ddd;
+    text-align: center;
+    word-break: break-word;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.3;
+    max-width: 100%;
+}
+.naut-entry--list .naut-entry-name {
+    text-align: left;
+    -webkit-line-clamp: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+}
+
+/* Icon colours */
+.ni--dir   { color: #7db8f7; }
+.ni--text  { color: #a8c8fa; }
+.ni--pdf   { color: #f28b82; }
+.ni--audio { color: #81c995; }
+.ni--video { color: #ffb74d; }
+.ni--image { color: #ce93d8; }
+.ni--file  { color: rgba(255,255,255,0.38); }
+
+/* ── Rename input ──────────────────────────────────────────── */
+.naut-rename-input {
+    width: 82px;
+    background: rgba(10,10,16,0.92);
+    border: 1.5px solid rgba(74,144,226,0.72);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 12px;
+    font-family: inherit;
+    padding: 2px 5px;
+    outline: none;
+    text-align: center;
+    box-shadow: 0 0 0 3px rgba(74,144,226,0.16);
+}
+.naut-entry--list .naut-rename-input {
+    width: 200px;
+    text-align: left;
+}
+
+/* ── Status bar ────────────────────────────────────────────── */
+.naut-statusbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    background: #222226;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 12px;
+    color: rgba(255,255,255,0.32);
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.naut-statusbar-sel {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(255,255,255,0.38);
+}
+
+
+/* ── Context menu ──────────────────────────────────────────── */
+.naut-ctx {
+    position: fixed;
+    z-index: 9999;
+    background: #2c2c32;
+    border: 1px solid rgba(255,255,255,0.11);
+    border-radius: 11px;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.3);
+    padding: 5px;
+    min-width: 190px;
+    animation: ctxIn 120ms cubic-bezier(0.16,1,0.3,1);
+    transform-origin: top left;
+}
+@keyframes ctxIn {
+    from { opacity: 0; transform: scale(0.91); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.naut-ctx-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 7px 10px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.82);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 7px;
+    text-align: left;
+    transition: background 100ms ease;
+}
+.naut-ctx-item:hover { background: rgba(255,255,255,0.09); }
+.naut-ctx-item--danger { color: #f28b82; }
+.naut-ctx-item--danger:hover { background: rgba(242,139,130,0.12); }
+
+.naut-ctx-sep {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 4px 8px;
+}
+
+/* ══ RESPONSIVE / MOBILE ═══════════════════════════════════ */
+@media (max-width: 640px) {
+    .naut-win {
+        width: calc(100vw - 12px) ;
+        height: calc(90vh - 100px) ;
+    }
+
+    .naut-sidebar {
+        position: absolute;
+        top: 46px;
+        left: 0;
+        bottom: 26px;
+        z-index: 20;
+        width: 200px;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+        transition: transform 280ms cubic-bezier(0.16,1,0.3,1), opacity 240ms ease;
+    }
+    .naut-sidebar--closed {
+        width: 200px;
+        transform: translateX(-100%);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .naut-breadcrumb-btn { max-width: 68px; font-size: 12px; }
+    .naut-entry--grid { width: 78px; }
+
+    .naut-titlebar { padding: 0 4px; gap: 2px; }
+}
+
