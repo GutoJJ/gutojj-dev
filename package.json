@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@firecms/neat": "^1.0.2",
+    "framer-motion": "^13.4.1",
     "lucide-react": "^1.34.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
